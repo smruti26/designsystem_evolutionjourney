@@ -1,0 +1,2836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRONTEND — Design System & Evolution</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjMDIwMjA0Ii8+CiAgPHJlY3QgeD0iNiIgeT0iNiIgd2lkdGg9IjUyIiBoZWlnaHQ9IjUyIiBmaWxsPSJub25lIiBzdHJva2U9IiNjOGYwM2MiIHN0cm9rZS13aWR0aD0iMS41IiBvcGFjaXR5PSIwLjI1Ii8+CiAgPGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMTgiIGZpbGw9IiNjOGYwM2MiIG9wYWNpdHk9IjAuMDgiLz4KICA8dGV4dCB4PSIzMiIgeT0iNDQiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzNCIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iI2M4ZjAzYyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RjwvdGV4dD4KICA8Y2lyY2xlIGN4PSI0OCIgY3k9IjE0IiByPSI0IiBmaWxsPSIjYzhmMDNjIi8+Cjwvc3ZnPg==">
+<link rel="shortcut icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjMDIwMjA0Ii8+CiAgPHJlY3QgeD0iNiIgeT0iNiIgd2lkdGg9IjUyIiBoZWlnaHQ9IjUyIiBmaWxsPSJub25lIiBzdHJva2U9IiNjOGYwM2MiIHN0cm9rZS13aWR0aD0iMS41IiBvcGFjaXR5PSIwLjI1Ii8+CiAgPGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMTgiIGZpbGw9IiNjOGYwM2MiIG9wYWNpdHk9IjAuMDgiLz4KICA8dGV4dCB4PSIzMiIgeT0iNDQiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzNCIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iI2M4ZjAzYyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RjwvdGV4dD4KICA8Y2lyY2xlIGN4PSI0OCIgY3k9IjE0IiByPSI0IiBmaWxsPSIjYzhmMDNjIi8+Cjwvc3ZnPg==">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #020204;
+  --white: #f0ede6;
+  --accent: #c8f03c;
+  --accent2: #3cf0c8;
+  --accent3: #f03c6a;
+  --mid: #0e0e16;
+  --mid2: #1a1a22;
+  --muted: #3a3a4a;
+  --text-dim: #6a6a7a;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ─── LOADER / WELCOME SCREEN ─── */
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #020204;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+#loader .l-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(200,240,60,0.07) 0%, transparent 70%);
+  animation: lBgPulse 3s ease-in-out infinite;
+}
+@keyframes lBgPulse {
+  0%,100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+#loader .l-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(200,240,60,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,240,60,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: lGridMove 8s linear infinite;
+}
+@keyframes lGridMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
+.l-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(200,240,60,0.08);
+  animation: lRingExpand 4s ease-out infinite;
+}
+.l-ring:nth-child(3) { width: 200px; height: 200px; animation-delay: 0s; }
+.l-ring:nth-child(4) { width: 400px; height: 400px; animation-delay: 1s; }
+.l-ring:nth-child(5) { width: 600px; height: 600px; animation-delay: 2s; }
+.l-ring:nth-child(6) { width: 800px; height: 800px; animation-delay: 3s; }
+@keyframes lRingExpand {
+  0% { opacity: 0; transform: scale(0.5); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+.l-center {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+.l-dot {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin: 0 auto 32px;
+  animation: lDotPulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 20px var(--accent), 0 0 40px rgba(200,240,60,0.3);
+}
+@keyframes lDotPulse {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.8); opacity: 0.6; }
+}
+.l-title {
+  font-family: var(--font-display);
+  font-size: clamp(60px, 10vw, 140px);
+  line-height: 0.9;
+  letter-spacing: 0.05em;
+  overflow: hidden;
+}
+.l-title-line {
+  display: block;
+  transform: translateY(100%);
+  animation: lLineUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.l-title-line:nth-child(1) { animation-delay: 0.2s; }
+.l-title-line:nth-child(2) { animation-delay: 0.35s; color: var(--accent); }
+.l-title-line:nth-child(3) { animation-delay: 0.5s; }
+@keyframes lLineUp {
+  to { transform: translateY(0); }
+}
+.l-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 28px;
+  opacity: 0;
+  animation: lFadeIn 0.8s 0.9s forwards;
+}
+@keyframes lFadeIn { to { opacity: 1; } }
+.l-progress {
+  width: 200px;
+  height: 1px;
+  background: var(--muted);
+  margin: 40px auto 0;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  animation: lFadeIn 0.5s 1s forwards;
+}
+.l-progress-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: var(--accent);
+  width: 0;
+  animation: lProgress 2s 1.1s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+@keyframes lProgress { to { width: 100%; } }
+#loader.exit {
+  animation: loaderExit 0.9s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+@keyframes loaderExit {
+  0% { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 0 100% 0); }
+}
+
+/* ─── CURSOR ─── */
+.cursor {
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transition: width 0.2s, height 0.2s, background 0.2s;
+}
+.cursor-ring {
+  width: 32px; height: 32px;
+  border: 1px solid rgba(200,240,60,0.5);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+}
+.cursor.hover { width: 16px; height: 16px; }
+.cursor-ring.hover { width: 56px; height: 56px; border-color: rgba(200,240,60,0.2); }
+
+/* ─── NOISE ─── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9980;
+  opacity: 0.35;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 28px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: padding 0.4s, background 0.4s;
+}
+nav.scrolled {
+  padding: 16px 60px;
+  background: rgba(2,2,4,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(200,240,60,0.08);
+}
+.nav-logo {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--white);
+  text-transform: uppercase;
+}
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 40px; list-style: none; }
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--white);
+  text-decoration: none;
+  text-transform: uppercase;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+.nav-links a:hover { opacity: 1; }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+/* ─── HERO ─── */
+#hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-scene {
+  position: absolute;
+  inset: 0;
+  perspective: 1200px;
+}
+.hero-layer {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.hero-grid-layer {
+  background-image:
+    linear-gradient(rgba(200,240,60,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,240,60,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 90%);
+}
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  will-change: transform;
+}
+.h-orb1 {
+  width: 600px; height: 600px;
+  background: rgba(200,240,60,0.07);
+  top: -200px; right: -100px;
+}
+.h-orb2 {
+  width: 400px; height: 400px;
+  background: rgba(60,240,200,0.05);
+  bottom: -100px; left: -100px;
+}
+.h-orb3 {
+  width: 300px; height: 300px;
+  background: rgba(240,60,106,0.04);
+  top: 30%; left: 60%;
+}
+
+/* Floating particles */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--accent);
+  pointer-events: none;
+  animation: particleFloat linear infinite;
+  opacity: 0;
+}
+@keyframes particleFloat {
+  0% { transform: translateY(100vh) scale(0); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-20px) scale(1); opacity: 0; }
+}
+
+.hero-content {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  padding: 0 20px;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: slideUp 1s 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: '';
+  width: 40px; height: 1px;
+  background: var(--accent);
+  opacity: 0.4;
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(80px, 13vw, 200px);
+  line-height: 0.88;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+}
+.hero-title-line {
+  display: block;
+  transform: translateY(110%);
+  animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.hero-title-line:nth-child(1) { animation-delay: 0.5s; }
+.hero-title-line:nth-child(2) { animation-delay: 0.65s; color: var(--accent); }
+.hero-title-line:nth-child(3) { animation-delay: 0.8s; }
+.hero-subtitle {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--text-dim);
+  margin-top: 36px;
+  max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.8;
+  opacity: 0;
+  animation: slideUp 1s 1s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.hero-cta-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 40px;
+  opacity: 0;
+  animation: slideUp 1s 1.15s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.btn-primary {
+  padding: 14px 32px;
+  background: var(--accent);
+  color: var(--black);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.15);
+  transform: translateX(-100%);
+  transition: transform 0.4s;
+}
+.btn-primary:hover { transform: translateY(-2px); }
+.btn-primary:hover::before { transform: translateX(0); }
+.btn-ghost {
+  padding: 13px 32px;
+  background: transparent;
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid var(--muted);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+.hero-scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  animation: slideUp 1s 1.4s forwards;
+}
+.hero-scroll span {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.scroll-line {
+  width: 1px; height: 56px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  animation: scrollPulse 2.5s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%,100% { transform: scaleY(1); opacity: 1; }
+  50% { transform: scaleY(0.4); opacity: 0.3; }
+}
+
+.hero-stat-row {
+  position: absolute;
+  bottom: 40px;
+  right: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  opacity: 0;
+  animation: slideUp 1s 1.3s forwards;
+}
+.hero-stat {
+  text-align: right;
+  border-right: 1px solid var(--muted);
+  padding-right: 20px;
+}
+.hero-stat-num {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 1;
+  color: var(--accent);
+}
+.hero-stat-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ─── SHARED SECTION STYLES ─── */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  max-width: 60px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.4;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 6vw, 96px);
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+}
+.section-body {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--text-dim);
+  line-height: 1.85;
+  margin-top: 28px;
+}
+
+/* ─── WHAT SECTION ─── */
+#what {
+  min-height: 100vh;
+  padding: 140px 60px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.what-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 120px;
+  align-items: center;
+  width: 100%;
+}
+.pillars-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+.pillar-card {
+  background: var(--mid2);
+  padding: 32px 28px;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  transition: background 0.4s, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.pillar-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.pillar-card:hover { background: #1f1f2a; transform: translateY(-3px); }
+.pillar-card:hover::before { transform: scaleX(1); }
+.pillar-icon {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--accent);
+  margin-bottom: 14px;
+  display: block;
+  font-weight: 300;
+}
+.pillar-title {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.pillar-desc {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* ─── TIMELINE — STICKY PANEL ─── */
+#timeline {
+  position: relative;
+  background: var(--black);
+}
+.timeline-sticky-wrapper {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+}
+.timeline-left {
+  width: 45%;
+  padding: 120px 60px 120px 60px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+.timeline-right {
+  width: 55%;
+  padding: 80px 60px 80px 40px;
+  position: relative;
+}
+
+/* Visual panel — the big right panel */
+.tl-visual {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.tl-era-display {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.tl-year-bg {
+  font-family: var(--font-display);
+  font-size: 40vw;
+  line-height: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.03;
+  color: var(--white);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  white-space: nowrap;
+}
+.tl-active-year {
+  font-family: var(--font-display);
+  font-size: clamp(60px, 8vw, 120px);
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tl-active-year.visible { opacity: 1; transform: translateX(0); }
+.tl-active-era {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin: 12px 0;
+  opacity: 0;
+  transition: all 0.6s 0.1s cubic-bezier(0.16,1,0.3,1);
+  transform: translateX(-15px);
+}
+.tl-active-era.visible { opacity: 1; transform: translateX(0); }
+.tl-active-title {
+  font-size: clamp(20px, 2.5vw, 32px);
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateX(-15px);
+  transition: all 0.6s 0.15s cubic-bezier(0.16,1,0.3,1);
+  max-width: 400px;
+}
+.tl-active-title.visible { opacity: 1; transform: translateX(0); }
+.tl-active-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text-dim);
+  line-height: 1.8;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.6s 0.2s cubic-bezier(0.16,1,0.3,1);
+  max-width: 420px;
+}
+.tl-active-desc.visible { opacity: 1; transform: translateX(0); }
+.tl-active-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.6s 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.tl-active-tags.visible { opacity: 1; transform: translateY(0); }
+
+.tl-progress-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--muted);
+}
+.tl-progress-fill {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  background: linear-gradient(to bottom, var(--accent), var(--accent2));
+  transition: height 0.15s linear;
+}
+.tl-counter {
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+}
+.tl-counter span { color: var(--accent); }
+
+/* Timeline items on right */
+.tl-items-track {
+  position: relative;
+  padding-left: 40px;
+}
+.tl-item {
+  padding: 60px 0 60px 0;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -28px;
+  top: 72px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  border: 2px solid var(--black);
+}
+.tl-item.active::before {
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(200,240,60,0.15), 0 0 16px var(--accent);
+  transform: scale(1.4);
+}
+.tl-item-year {
+  font-family: var(--font-display);
+  font-size: 52px;
+  line-height: 1;
+  color: var(--muted);
+  transition: color 0.4s, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  margin-bottom: 8px;
+}
+.tl-item.active .tl-item-year { color: var(--white); transform: translateX(8px); }
+.tl-item-title {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.5;
+  transition: opacity 0.4s, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  margin-bottom: 8px;
+}
+.tl-item.active .tl-item-title { opacity: 1; transform: translateX(8px); }
+.tl-item-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: all 0.4s 0.1s cubic-bezier(0.16,1,0.3,1);
+}
+.tl-item.active .tl-item-tags { opacity: 1; transform: translateY(0); }
+.tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  padding: 3px 9px;
+  border: 1px solid var(--muted);
+  color: var(--text-dim);
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+.tl-item.active .tag { border-color: rgba(200,240,60,0.3); color: var(--accent); }
+.tl-track-line {
+  position: absolute;
+  left: 11px;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: var(--muted);
+}
+.tl-track-progress {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 0;
+  background: linear-gradient(to bottom, var(--accent), var(--accent2));
+  transition: height 0.2s ease;
+}
+
+/* ─── UX EVOLUTION — STICKY ─── */
+#ux-evolution {
+  position: relative;
+  background: var(--mid);
+}
+.ux-sticky-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+.ux-right {
+  width: 45%;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--mid);
+  order: 2;
+}
+.ux-left {
+  width: 55%;
+  padding: 80px 60px 80px 60px;
+  order: 1;
+  position: relative;
+}
+
+/* The big visual preview panel */
+.ux-preview-stage {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.ux-preview-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(200,240,60,0.04) 0%, transparent 70%);
+}
+.ux-mockup-wrap {
+  position: relative;
+  width: 380px;
+  height: 280px;
+}
+.ux-mockup {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  transition: all 0.7s cubic-bezier(0.16,1,0.3,1);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ux-mockup.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.ux-era-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+.ux-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  cursor: pointer;
+}
+.ux-dot.active {
+  background: var(--accent);
+  width: 24px;
+  border-radius: 3px;
+  box-shadow: 0 0 8px var(--accent);
+}
+.ux-label-panel {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+}
+.ux-era-num {
+  font-family: var(--font-display);
+  font-size: 80px;
+  line-height: 1;
+  opacity: 0.06;
+}
+.ux-era-name-display {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateY(5px);
+  transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.ux-era-name-display.visible { opacity: 1; transform: translateY(0); }
+
+/* UX Items scroll list */
+.ux-item {
+  padding: 64px 0;
+  position: relative;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: all 0.4s;
+}
+.ux-item:first-child { padding-top: 120px; }
+.ux-item:last-child { padding-bottom: 120px; }
+.ux-item-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+  opacity: 0.4;
+  transition: opacity 0.4s;
+}
+.ux-item.active .ux-item-label { opacity: 1; }
+.ux-item-title {
+  font-size: clamp(24px, 3vw, 40px);
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  opacity: 0.3;
+  transition: opacity 0.4s, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.ux-item.active .ux-item-title { opacity: 1; }
+.ux-item-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text-dim);
+  line-height: 1.8;
+  max-width: 460px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s 0.1s cubic-bezier(0.16,1,0.3,1);
+}
+.ux-item.active .ux-item-desc { opacity: 1; transform: translateY(0); }
+.ux-item-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+  opacity: 0;
+  transition: all 0.5s 0.2s cubic-bezier(0.16,1,0.3,1);
+}
+.ux-item.active .ux-item-keywords { opacity: 1; }
+.keyword {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  background: rgba(200,240,60,0.06);
+  border: 1px solid rgba(200,240,60,0.15);
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+/* ─── DESIGN TOKENS ─── */
+#tokens {
+  padding: 140px 60px;
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+}
+.tokens-inner { max-width: 1400px; margin: 0 auto; }
+.tokens-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  margin-bottom: 80px;
+}
+.color-swatches {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+  margin-bottom: 60px;
+}
+.swatch-group { display: flex; flex-direction: column; gap: 3px; }
+.swatch {
+  height: 44px;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+  position: relative;
+}
+.swatch:hover { transform: scaleY(1.15) translateY(-2px); }
+.swatch-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+.type-scale {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 60px 0;
+  border-top: 1px solid var(--muted);
+  border-bottom: 1px solid var(--muted);
+}
+.type-row { display: flex; align-items: baseline; gap: 40px; }
+.type-spec {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  width: 140px;
+  flex-shrink: 0;
+}
+.type-sample { line-height: 1; }
+.spacing-viz {
+  margin-top: 60px;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+.spacing-bar {
+  background: var(--accent);
+  width: 20px;
+  opacity: 0.7;
+  transition: opacity 0.3s, transform 0.3s cubic-bezier(0.16,1,0.3,1);
+  position: relative;
+}
+.spacing-bar:hover { opacity: 1; transform: scaleY(1.05); }
+.spacing-bar::after {
+  content: attr(data-size);
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+/* ─── ATOMIC ─── */
+#atomic {
+  padding: 140px 60px;
+  background: var(--mid2);
+  position: relative;
+  overflow: hidden;
+}
+.atomic-inner { max-width: 1400px; margin: 0 auto; }
+.atomic-levels {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px;
+  margin-top: 80px;
+}
+.level-card {
+  padding: 48px 28px;
+  background: var(--mid);
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+  transition: background 0.3s, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  cursor: default;
+}
+.level-card:hover { background: #101018; transform: translateY(-4px); }
+.level-number {
+  font-family: var(--font-display);
+  font-size: 100px;
+  line-height: 1;
+  position: absolute;
+  top: -10px; left: 50%;
+  transform: translateX(-50%);
+  opacity: 0.04;
+  color: var(--white);
+  pointer-events: none;
+}
+.level-icon-area {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.level-name {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.level-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+.level-desc {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+.atom-demo { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.atom-btn {
+  padding: 7px 14px;
+  background: var(--accent);
+  color: var(--black);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+.atom-input {
+  padding: 7px 10px;
+  background: transparent;
+  border: 1px solid var(--muted);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  width: 80px;
+}
+.atom-badge {
+  padding: 3px 7px;
+  background: rgba(200,240,60,0.12);
+  border: 1px solid rgba(200,240,60,0.25);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--accent);
+}
+.molecule-card-demo {
+  background: #060610;
+  padding: 12px;
+  border: 1px solid var(--muted);
+  width: 100%;
+}
+
+/* ─── DOMAINS ─── */
+#domains {
+  padding: 140px 60px;
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+}
+#domains .bg-text { pointer-events: none; }
+
+/* animated grid background */
+#domains::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(200,240,60,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,240,60,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: domainGridShift 20s linear infinite;
+}
+@keyframes domainGridShift {
+  0% { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
+
+.domains-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  margin-top: 80px;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Each card starts invisible, revealed by JS */
+.domain-card {
+  padding: 64px 52px 52px;
+  background: rgba(26,26,34,0.85);
+  backdrop-filter: blur(4px);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: background 0.5s, transform 0.6s cubic-bezier(0.16,1,0.3,1), box-shadow 0.6s;
+  opacity: 0;
+  transform: translateY(50px) scale(0.97);
+}
+.domain-card.in-view {
+  animation: domainCardReveal 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.domain-card:nth-child(1).in-view { animation-delay: 0s; }
+.domain-card:nth-child(2).in-view { animation-delay: 0.12s; }
+.domain-card:nth-child(3).in-view { animation-delay: 0.22s; }
+.domain-card:nth-child(4).in-view { animation-delay: 0.32s; }
+
+@keyframes domainCardReveal {
+  0%   { opacity: 0; transform: translateY(50px) scale(0.97); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* hover lift + glow */
+.domain-card:hover {
+  background: rgba(17,17,32,0.95);
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 32px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,240,60,0.1);
+  z-index: 2;
+}
+
+/* animated corner accent */
+.domain-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 0; height: 2px;
+  background: linear-gradient(to right, var(--accent), var(--accent2));
+  transition: width 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.domain-card:hover::before { width: 100%; }
+
+/* left border reveal on hover */
+.domain-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 2px; height: 0;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  transition: height 0.6s 0.1s cubic-bezier(0.16,1,0.3,1);
+}
+.domain-card:hover::after { height: 100%; }
+
+/* scanning light sweep */
+.domain-card .card-sweep {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(200,240,60,0.04) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform 0s;
+  pointer-events: none;
+}
+.domain-card:hover .card-sweep {
+  transform: translateX(100%);
+  transition: transform 0.8s ease;
+}
+
+/* floating icon */
+.domain-icon {
+  width: 56px; height: 56px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(200,240,60,0.2);
+  margin-bottom: 28px;
+  position: relative;
+  transition: border-color 0.4s, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  background: rgba(200,240,60,0.04);
+}
+.domain-card:hover .domain-icon {
+  border-color: rgba(200,240,60,0.6);
+  transform: rotate(-6deg) scale(1.08);
+  background: rgba(200,240,60,0.08);
+}
+.domain-icon svg {
+  width: 24px; height: 24px;
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.3s;
+}
+
+/* big number, now more dramatic */
+.domain-num {
+  font-family: var(--font-display);
+  font-size: clamp(100px,14vw,200px);
+  line-height: 1;
+  position: absolute;
+  bottom: -30px; right: -10px;
+  opacity: 0.03;
+  color: var(--white);
+  transition: opacity 0.5s, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  pointer-events: none;
+  letter-spacing: -0.04em;
+}
+.domain-card:hover .domain-num {
+  opacity: 0.07;
+  transform: translate(-8px, -8px) scale(1.05);
+}
+
+.domain-type {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 12px;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+.domain-card:hover .domain-type { opacity: 1; }
+
+.domain-title {
+  font-family: var(--font-display);
+  font-size: clamp(36px,3.5vw,56px);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin-bottom: 20px;
+  transition: color 0.3s;
+  position: relative;
+}
+.domain-card:hover .domain-title { color: var(--accent); }
+
+.domain-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text-dim);
+  line-height: 1.85;
+  margin-bottom: 32px;
+  max-width: 360px;
+  transition: color 0.3s;
+}
+.domain-card:hover .domain-desc { color: rgba(240,237,230,0.7); }
+
+/* features — stagger on hover */
+.domain-features { display: flex; flex-direction: column; gap: 0; }
+.domain-feature {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-dim);
+  padding: 8px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.3s, border-color 0.3s, padding-left 0.4s cubic-bezier(0.16,1,0.3,1);
+  position: relative;
+}
+.domain-card:hover .domain-feature {
+  border-bottom-color: rgba(200,240,60,0.06);
+}
+.domain-card:hover .domain-feature:nth-child(1) { padding-left: 6px; transition-delay: 0.05s; color: var(--white); }
+.domain-card:hover .domain-feature:nth-child(2) { padding-left: 6px; transition-delay: 0.10s; color: var(--white); }
+.domain-card:hover .domain-feature:nth-child(3) { padding-left: 6px; transition-delay: 0.15s; color: var(--white); }
+.domain-card:hover .domain-feature:nth-child(4) { padding-left: 6px; transition-delay: 0.20s; color: var(--white); }
+
+.domain-feature-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--muted);
+  flex-shrink: 0;
+  transition: background 0.3s, transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s;
+}
+.domain-card:hover .domain-feature-dot {
+  background: var(--accent);
+  transform: scale(1.4);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+/* stat bar inside card */
+.domain-stat-bar {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(200,240,60,0.08);
+  display: flex;
+  gap: 28px;
+}
+.domain-stat { text-align: center; }
+.domain-stat-val {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 1;
+  color: var(--accent);
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.domain-card:hover .domain-stat-val { transform: scale(1.1); }
+.domain-stat-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* progress ring on card */
+.domain-ring-wrap {
+  position: absolute;
+  top: 24px; right: 24px;
+  width: 44px; height: 44px;
+  opacity: 0;
+  transform: scale(0.7) rotate(-90deg);
+  transition: opacity 0.4s, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.domain-card:hover .domain-ring-wrap {
+  opacity: 1;
+  transform: scale(1) rotate(-90deg);
+}
+.domain-ring-bg { stroke: rgba(200,240,60,0.1); fill: none; }
+.domain-ring-fill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-linecap: round;
+  stroke-dasharray: 110;
+  stroke-dashoffset: 110;
+  transition: stroke-dashoffset 0.8s 0.2s cubic-bezier(0.16,1,0.3,1);
+}
+.domain-card:hover .domain-ring-fill { stroke-dashoffset: 0; }
+
+/* ─── ACCESSIBILITY ─── */
+#accessibility {
+  padding: 140px 60px;
+  background: var(--mid2);
+}
+.a11y-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 120px;
+  align-items: start;
+}
+.wcag-levels { margin-top: 48px; display: flex; flex-direction: column; gap: 2px; }
+.wcag-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
+  background: var(--mid);
+  transition: background 0.3s, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.wcag-row:hover { background: #101018; transform: translateX(4px); }
+.wcag-level { font-family: var(--font-display); font-size: 32px; width: 60px; flex-shrink: 0; }
+.wcag-level.a { color: var(--accent3); }
+.wcag-level.aa { color: var(--accent); }
+.wcag-level.aaa { color: var(--accent2); }
+.wcag-info { flex: 1; }
+.wcag-name { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+.wcag-desc { font-size: 12px; font-weight: 300; color: var(--text-dim); line-height: 1.5; }
+.contrast-demo { margin-top: 48px; display: flex; flex-direction: column; gap: 10px; }
+.contrast-pair {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border: 1px solid var(--muted);
+  transition: border-color 0.3s;
+}
+.contrast-pair:hover { border-color: rgba(200,240,60,0.3); }
+.contrast-swatch {
+  width: 44px; height: 44px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 13px; font-weight: 500;
+}
+.contrast-ratio { font-family: var(--font-mono); font-size: 18px; font-weight: 300; }
+.contrast-label { font-size: 11px; font-weight: 300; color: var(--text-dim); }
+.contrast-pass {
+  font-family: var(--font-mono); font-size: 9px;
+  padding: 3px 8px; border: 1px solid;
+  letter-spacing: 0.1em; margin-left: auto;
+}
+.pass { border-color: var(--accent); color: var(--accent); }
+.fail { border-color: var(--accent3); color: var(--accent3); }
+.progress-section { margin-top: 60px; }
+.progress-item { margin-bottom: 22px; }
+.progress-header {
+  display: flex; justify-content: space-between; margin-bottom: 8px;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--text-dim);
+}
+.progress-track { height: 2px; background: var(--muted); position: relative; overflow: hidden; }
+.progress-fill {
+  height: 100%; background: linear-gradient(to right, var(--accent), var(--accent2));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 1.8s cubic-bezier(0.16,1,0.3,1);
+}
+.progress-fill.animated { transform: scaleX(1); }
+
+/* ─── TECH MARQUEE ─── */
+#techstack {
+  padding: 140px 60px;
+  background: var(--black);
+  overflow: hidden;
+  position: relative;
+}
+.tech-marquee-wrap {
+  overflow: hidden;
+  padding: 16px 0;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+.tech-marquee {
+  display: flex; gap: 0;
+  animation: marquee 35s linear infinite;
+  white-space: nowrap;
+}
+.tech-marquee-rev { animation-direction: reverse; animation-duration: 28s; }
+.tech-item {
+  padding: 12px 28px;
+  border: 1px solid var(--muted);
+  margin-right: 10px; flex-shrink: 0;
+  transition: all 0.3s;
+}
+.tech-item:hover { border-color: rgba(200,240,60,0.4); background: rgba(200,240,60,0.04); }
+.tech-item-name { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; }
+.tech-item-year { font-size: 10px; color: var(--text-dim); margin-top: 3px; font-weight: 300; }
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ─── PERFORMANCE ─── */
+#performance {
+  padding: 140px 60px;
+  background: var(--mid2);
+}
+.perf-inner { max-width: 1400px; margin: 0 auto; }
+.perf-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin-top: 80px;
+}
+.metric-card {
+  padding: 48px 36px;
+  background: var(--mid);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.metric-card:hover { transform: translateY(-4px); }
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.metric-card:hover::before { opacity: 1; }
+.metric-val {
+  font-family: var(--font-display);
+  font-size: 72px;
+  line-height: 1;
+  color: var(--accent);
+}
+.metric-unit { font-family: var(--font-mono); font-size: 13px; color: var(--accent); }
+.metric-name { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; color: var(--text-dim); margin-top: 8px; text-transform: uppercase; }
+.metric-desc { font-size: 12px; font-weight: 300; color: var(--muted); margin-top: 10px; line-height: 1.6; }
+.vitals-bars { margin-top: 60px; display: flex; flex-direction: column; gap: 24px; max-width: 700px; }
+.vital-row { display: flex; align-items: center; gap: 20px; }
+.vital-name { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; width: 60px; color: var(--text-dim); }
+.vital-bar-bg { flex: 1; height: 2px; background: var(--muted); position: relative; }
+.vital-bar-fill { height: 100%; background: linear-gradient(to right, var(--accent), var(--accent2)); transform: scaleX(0); transform-origin: left; transition: transform 2s cubic-bezier(0.16,1,0.3,1); }
+.vital-bar-fill.animated { transform: scaleX(1); }
+.vital-score { font-family: var(--font-mono); font-size: 10px; color: var(--accent); width: 40px; text-align: right; }
+
+/* ─── FRAMEWORKS ─── */
+#frameworks {
+  padding: 140px 60px;
+  background: var(--black);
+}
+.fw-inner { max-width: 1400px; margin: 0 auto; }
+.fw-comparison {
+  margin-top: 80px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.fw-card {
+  padding: 52px 44px;
+  background: var(--mid2);
+  position: relative;
+  transition: background 0.3s, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  overflow: hidden;
+}
+.fw-card:hover { background: #0a0a14; transform: translateY(-4px); }
+.fw-card.featured { border-top: 2px solid var(--accent); background: #080810; }
+.fw-featured-badge {
+  position: absolute;
+  top: 0; right: 0;
+  background: var(--accent);
+  color: var(--black);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  padding: 4px 12px;
+  text-transform: uppercase;
+}
+.fw-logo { font-family: var(--font-display); font-size: 52px; line-height: 1; margin-bottom: 8px; }
+.fw-version { font-family: var(--font-mono); font-size: 10px; color: var(--accent2); letter-spacing: 0.1em; margin-bottom: 24px; }
+.fw-desc { font-size: 13px; font-weight: 300; color: var(--text-dim); line-height: 1.7; margin-bottom: 28px; }
+.fw-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.fw-stat-val { font-family: var(--font-display); font-size: 30px; line-height: 1; }
+.fw-stat-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; margin-top: 4px; }
+
+/* ─── MANIFESTO ─── */
+#manifesto {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding: 140px 60px;
+  background: var(--black);
+}
+.manifesto-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(200,240,60,0.06) 0%, transparent 70%);
+}
+.manifesto-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(200,240,60,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,240,60,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.manifesto-content { position: relative; z-index: 2; max-width: 1000px; }
+.manifesto-title {
+  font-family: var(--font-display);
+  font-size: clamp(60px, 9vw, 140px);
+  line-height: 0.9; letter-spacing: 0.02em; margin-bottom: 48px;
+}
+.manifesto-principles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-top: 80px;
+  text-align: left;
+}
+.principle {
+  padding: 32px;
+  border: 1px solid var(--muted);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.4s, transform 0.4s cubic-bezier(0.16,1,0.3,1), background 0.4s;
+}
+.principle:hover { border-color: rgba(200,240,60,0.3); transform: translateY(-3px); background: rgba(200,240,60,0.02); }
+.principle-num {
+  font-family: var(--font-display);
+  font-size: 72px; position: absolute; top: -15px; right: 12px; opacity: 0.05; line-height: 1;
+}
+.principle-title { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.principle-text { font-size: 13px; font-weight: 300; color: var(--text-dim); line-height: 1.75; }
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 60px;
+  border-top: 1px solid var(--muted);
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+}
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  opacity: 0.3;
+}
+.footer-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+}
+.footer-logo { font-family: var(--font-display); font-size: 36px; letter-spacing: 0.1em; color: var(--white); }
+.footer-logo span { color: var(--accent); }
+.footer-copy-block { text-align: right; }
+.footer-copy-main {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--white);
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+.footer-copy-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+.footer-copy-sub span { color: var(--accent); }
+
+/* ─── SCROLL REVEAL ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.08s; }
+.reveal-delay-2 { transition-delay: 0.16s; }
+.reveal-delay-3 { transition-delay: 0.24s; }
+.reveal-delay-4 { transition-delay: 0.32s; }
+
+/* ─── BIG BG TEXT ─── */
+.bg-text {
+  font-family: var(--font-display);
+  font-size: clamp(80px, 15vw, 240px);
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0.02;
+  position: absolute;
+  pointer-events: none;
+  letter-spacing: -0.02em;
+  will-change: transform;
+}
+
+/* ─── PARALLAX CONTAINER ─── */
+[data-parallax] { will-change: transform; }
+
+/* ─── DIVIDER ─── */
+.divider { width: 100%; height: 1px; background: linear-gradient(to right, transparent, var(--muted), transparent); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ─── NEUMORPHISM DEMO ─── */
+.neu-card {
+  width: 110px; height: 110px; border-radius: 18px;
+  background: #e0e5ec;
+  box-shadow: 6px 6px 12px #b8bec7, -6px -6px 12px #ffffff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+}
+.glass-bg-demo {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.glass-card {
+  padding: 20px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  width: 160px; text-align: center; font-size: 12px;
+}
+
+@media (max-width: 960px) {
+  .timeline-sticky-wrapper, .ux-sticky-wrapper { flex-direction: column; }
+  .timeline-left, .timeline-right, .ux-left, .ux-right { width: 100%; position: relative; height: auto; }
+  .timeline-left, .ux-right { min-height: 50vh; }
+  .what-inner, .a11y-inner { grid-template-columns: 1fr; gap: 60px; }
+  .domains-grid, .fw-comparison { grid-template-columns: 1fr; }
+  .atomic-levels { grid-template-columns: repeat(2, 1fr); }
+  .perf-metrics { grid-template-columns: repeat(2, 1fr); }
+  .manifesto-principles { grid-template-columns: 1fr; }
+  .color-swatches { grid-template-columns: repeat(4, 1fr); }
+  nav { padding: 20px 24px; }
+  .nav-links { display: none; }
+  section, #what, #tokens, #atomic, #domains, #accessibility, #performance, #frameworks, #manifesto, #techstack { padding-left: 24px; padding-right: 24px; }
+}
+</style>
+</head>
+<body>
+
+<script>
+// Bulletproof favicon — injected via JS canvas as PNG fallback
+(function(){
+  try {
+    var c = document.createElement('canvas');
+    c.width = 64; c.height = 64;
+    var ctx = c.getContext('2d');
+    // background
+    ctx.fillStyle = '#020204';
+    ctx.fillRect(0,0,64,64);
+    // border square
+    ctx.strokeStyle = 'rgba(200,240,60,0.3)';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(6,6,52,52);
+    // glow circle
+    var grd = ctx.createRadialGradient(32,32,0,32,32,20);
+    grd.addColorStop(0,'rgba(200,240,60,0.15)');
+    grd.addColorStop(1,'rgba(200,240,60,0)');
+    ctx.fillStyle = grd;
+    ctx.beginPath(); ctx.arc(32,32,20,0,Math.PI*2); ctx.fill();
+    // F letter
+    ctx.fillStyle = '#c8f03c';
+    ctx.font = 'bold 36px Arial Black, Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('F', 32, 34);
+    // accent dot
+    ctx.beginPath(); ctx.arc(50,14,4,0,Math.PI*2);
+    ctx.fillStyle = '#c8f03c'; ctx.fill();
+    // set as favicon
+    var link = document.querySelector("link[rel~='icon']") || document.createElement('link');
+    link.rel = 'icon'; link.type = 'image/png';
+    link.href = c.toDataURL('image/png');
+    document.head.appendChild(link);
+  } catch(e){}
+})();
+</script>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="l-bg"></div>
+  <div class="l-grid"></div>
+  <div class="l-ring"></div>
+  <div class="l-ring"></div>
+  <div class="l-ring"></div>
+  <div class="l-ring"></div>
+  <div class="l-center">
+    <div class="l-dot"></div>
+    <div class="l-title">
+      <span class="l-title-line">FRONTEND</span>
+      <span class="l-title-line">DESIGN</span>
+      <span class="l-title-line">SYSTEM</span>
+    </div>
+    <div class="l-sub">Evolution Journey — 2005 to 2026</div>
+    <div class="l-progress"><div class="l-progress-fill"></div></div>
+  </div>
+</div>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav id="mainNav">
+  <div class="nav-logo">FDS <span>//</span> 2026</div>
+  <ul class="nav-links">
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#ux-evolution">Aesthetics</a></li>
+    <li><a href="#tokens">Tokens</a></li>
+    <li><a href="#atomic">Atomic</a></li>
+    <li><a href="#domains">Domains</a></li>
+    <li><a href="#manifesto">Manifesto</a></li>
+  </ul>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-scene">
+    <div class="hero-layer hero-grid-layer" data-parallax="0.2"></div>
+    <div class="hero-orb h-orb1" data-parallax="0.15"></div>
+    <div class="hero-orb h-orb2" data-parallax="0.1"></div>
+    <div class="hero-orb h-orb3" data-parallax="0.25"></div>
+  </div>
+
+  <!-- Floating particles -->
+  <div id="particles"></div>
+
+  <div class="hero-content" data-parallax="-0.05">
+    <div class="hero-eyebrow">Frontend Design System — Evolution Journey 2005–2026</div>
+    <h1 class="hero-title">
+      <span class="hero-title-line">BUILD</span>
+      <span class="hero-title-line">SYSTEMS</span>
+      <span class="hero-title-line">NOT PAGES</span>
+    </h1>
+    <p class="hero-subtitle">A comprehensive guide to modern frontend architecture — from atomic components to enterprise-scale design systems across every domain.</p>
+    <div class="hero-cta-row">
+      <button class="btn-primary" onclick="document.getElementById('timeline').scrollIntoView({behavior:'smooth'})">Explore Timeline</button>
+      <button class="btn-ghost" onclick="document.getElementById('manifesto').scrollIntoView({behavior:'smooth'})">View Principles</button>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+
+  <div class="hero-stat-row">
+    <div class="hero-stat">
+      <div class="hero-stat-num">20+</div>
+      <div class="hero-stat-label">Years Evolution</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">4</div>
+      <div class="hero-stat-label">Domains</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">98</div>
+      <div class="hero-stat-label">Lighthouse</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WHAT ─── -->
+<section id="what">
+  <div class="bg-text" style="bottom:-60px;left:-40px;">SYSTEM</div>
+  <div class="what-inner">
+    <div>
+      <div class="section-label reveal">01 / What</div>
+      <h2 class="section-title reveal reveal-delay-1">A DESIGN<br><span style="color:var(--accent)">SYSTEM</span><br>IS A LANGUAGE</h2>
+      <p class="section-body reveal reveal-delay-2">A design system is a collection of reusable components, guided by clear standards, that can be assembled together to build any number of applications. It's the single source of truth that unites design and engineering.</p>
+      <p class="section-body reveal reveal-delay-3" style="margin-top:14px;">From atoms to organisms, from tokens to themes — a great design system scales from a startup's MVP to an enterprise platform serving millions.</p>
+    </div>
+    <div class="pillars-grid reveal reveal-delay-2">
+      <div class="pillar-card"><span class="pillar-icon">{}</span><div class="pillar-title">Design Tokens</div><div class="pillar-desc">Colors, spacing, typography — the atomic DNA of your visual language.</div></div>
+      <div class="pillar-card"><span class="pillar-icon">◻</span><div class="pillar-title">Components</div><div class="pillar-desc">Reusable, accessible, framework-agnostic building blocks.</div></div>
+      <div class="pillar-card"><span class="pillar-icon">♿</span><div class="pillar-title">Accessibility</div><div class="pillar-desc">WCAG 2.2 compliance baked in — not bolted on.</div></div>
+      <div class="pillar-card"><span class="pillar-icon">⚡</span><div class="pillar-title">Performance</div><div class="pillar-desc">Core Web Vitals optimized. Every millisecond matters.</div></div>
+      <div class="pillar-card"><span class="pillar-icon">∞</span><div class="pillar-title">Scalability</div><div class="pillar-desc">Micro-frontend ready. Grows from startup to enterprise.</div></div>
+      <div class="pillar-card"><span class="pillar-icon">⬡</span><div class="pillar-title">Documentation</div><div class="pillar-desc">Storybook-driven. Living docs that stay in sync.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── TIMELINE — STICKY ─── -->
+<section id="timeline">
+  <div class="timeline-sticky-wrapper">
+
+    <!-- LEFT: sticky panel -->
+    <div class="timeline-left">
+      <div class="tl-progress-line"><div class="tl-progress-fill" id="tlProgressFill"></div></div>
+      <div style="padding-left:32px;">
+        <div class="section-label">02 / Timeline</div>
+        <div style="margin-bottom:40px;">
+          <h2 class="section-title" style="font-size:clamp(36px,4vw,64px);">20 YEARS<br>OF<br><span style="color:var(--accent)">EVOLUTION</span></h2>
+        </div>
+        <div id="tlDisplay">
+          <div class="tl-active-year" id="tlYear">2005</div>
+          <div class="tl-active-era" id="tlEra">The Dark Ages</div>
+          <div class="tl-active-title" id="tlTitle">Table Layouts & jQuery Dawn</div>
+          <div class="tl-active-desc" id="tlDesc">Websites built with nested tables, inline styles. Internet Explorer 6 dictated everything. jQuery 1.0 launched — AJAX became accessible. The web finally felt dynamic.</div>
+          <div class="tl-active-tags" id="tlTags">
+            <span class="tag">HTML 4</span><span class="tag">CSS 2</span><span class="tag">jQuery</span><span class="tag">Flash</span><span class="tag">IE6</span>
+          </div>
+        </div>
+        <div class="tl-counter" id="tlCounter"><span id="tlNum">01</span> / 10</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: scroll list -->
+    <div class="timeline-right">
+      <div class="tl-items-track">
+        <div class="tl-track-line"><div class="tl-track-progress" id="tlTrackProg"></div></div>
+
+        <div class="tl-item active" data-idx="0">
+          <div class="tl-item-year">2005</div>
+          <div class="tl-item-title">Table Layouts & jQuery Dawn</div>
+          <div class="tl-item-tags"><span class="tag">HTML4</span><span class="tag">jQuery</span><span class="tag">Flash</span><span class="tag">IE6</span></div>
+        </div>
+        <div class="tl-item" data-idx="1">
+          <div class="tl-item-year">2008</div>
+          <div class="tl-item-title">CSS3 & the iPhone Effect</div>
+          <div class="tl-item-tags"><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">Sass</span><span class="tag">Mobile</span></div>
+        </div>
+        <div class="tl-item" data-idx="2">
+          <div class="tl-item-year">2011</div>
+          <div class="tl-item-title">Bootstrap & Responsive Design</div>
+          <div class="tl-item-tags"><span class="tag">Bootstrap</span><span class="tag">Media Queries</span><span class="tag">LESS</span></div>
+        </div>
+        <div class="tl-item" data-idx="3">
+          <div class="tl-item-year">2013</div>
+          <div class="tl-item-title">React & Flat Design</div>
+          <div class="tl-item-tags"><span class="tag">React</span><span class="tag">Flat Design</span><span class="tag">Angular.js</span></div>
+        </div>
+        <div class="tl-item" data-idx="4">
+          <div class="tl-item-year">2015</div>
+          <div class="tl-item-title">Material Design & ES6</div>
+          <div class="tl-item-tags"><span class="tag">Material</span><span class="tag">ES6</span><span class="tag">Redux</span><span class="tag">Webpack</span></div>
+        </div>
+        <div class="tl-item" data-idx="5">
+          <div class="tl-item-year">2017</div>
+          <div class="tl-item-title">Figma, CSS Grid & DX Focus</div>
+          <div class="tl-item-tags"><span class="tag">Figma</span><span class="tag">CSS Grid</span><span class="tag">Storybook</span></div>
+        </div>
+        <div class="tl-item" data-idx="6">
+          <div class="tl-item-year">2019</div>
+          <div class="tl-item-title">Tailwind CSS & React Hooks</div>
+          <div class="tl-item-tags"><span class="tag">Tailwind</span><span class="tag">Hooks</span><span class="tag">Next.js</span><span class="tag">TypeScript</span></div>
+        </div>
+        <div class="tl-item" data-idx="7">
+          <div class="tl-item-year">2021</div>
+          <div class="tl-item-title">Islands, RSC & Design Tokens</div>
+          <div class="tl-item-tags"><span class="tag">Vite</span><span class="tag">RSC</span><span class="tag">Design Tokens</span></div>
+        </div>
+        <div class="tl-item" data-idx="8">
+          <div class="tl-item-year">2023</div>
+          <div class="tl-item-title">AI Tools & Performance Era</div>
+          <div class="tl-item-tags"><span class="tag">AI Dev Tools</span><span class="tag">shadcn/ui</span><span class="tag">Core Web Vitals</span></div>
+        </div>
+        <div class="tl-item" data-idx="9">
+          <div class="tl-item-year">2026</div>
+          <div class="tl-item-title">React 19+ & Modern Minimalism</div>
+          <div class="tl-item-tags"><span class="tag">React 19</span><span class="tag">Server Actions</span><span class="tag">AI-First</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── UX EVOLUTION — STICKY ─── -->
+<section id="ux-evolution">
+  <div class="ux-sticky-wrapper">
+
+    <!-- LEFT: scroll content -->
+    <div class="ux-left">
+      <div style="margin-bottom:60px;">
+        <div class="section-label">03 / UX Evolution</div>
+        <h2 class="section-title">THE<br>AESTHETIC<br><span style="color:var(--accent)">JOURNEY</span></h2>
+      </div>
+
+      <div class="ux-item active" data-ux="0">
+        <div class="ux-item-label">2004 – 2008</div>
+        <div class="ux-item-title">Windows XP Era</div>
+        <div class="ux-item-desc">Table-based layouts, pixel fonts, spinning GIFs. "Best viewed in IE6" was a standard disclaimer. Skeuomorphism reigned — interfaces imitated real-world objects with extreme fidelity. Every button looked like you could physically press it.</div>
+        <div class="ux-item-keywords"><span class="keyword">Tables</span><span class="keyword">IE6</span><span class="keyword">Skeuomorphism</span><span class="keyword">Flash</span></div>
+      </div>
+
+      <div class="ux-item" data-ux="1">
+        <div class="ux-item-label">2008 – 2012</div>
+        <div class="ux-item-title">Skeuomorphism Peak</div>
+        <div class="ux-item-desc">iOS 6 era — leather textures, wood grain, realistic shadows. Buttons had depth and tactility. Rich gradients everywhere. Apple set the visual standard globally. Photorealism was the goal.</div>
+        <div class="ux-item-keywords"><span class="keyword">iOS 6</span><span class="keyword">Leather</span><span class="keyword">Gradients</span><span class="keyword">Depth</span></div>
+      </div>
+
+      <div class="ux-item" data-ux="2">
+        <div class="ux-item-label">2012 – 2015</div>
+        <div class="ux-item-title">Flat Design Era</div>
+        <div class="ux-item-desc">iOS 7 stripped everything back. Windows Metro influenced the web. Pure colors, zero shadows, bold typography. Minimalism as aesthetic statement. Content over chrome became the mantra.</div>
+        <div class="ux-item-keywords"><span class="keyword">iOS 7</span><span class="keyword">Zero Shadow</span><span class="keyword">Bold Color</span><span class="keyword">Metro</span></div>
+      </div>
+
+      <div class="ux-item" data-ux="3">
+        <div class="ux-item-label">2014 – 2018</div>
+        <div class="ux-item-title">Material Design</div>
+        <div class="ux-item-desc">Google codified "depth as meaning." Elevation, motion, and consistent behavior. Cards, FABs, and the paper metaphor unified Android and web. Design systems became a serious discipline. Motion had purpose.</div>
+        <div class="ux-item-keywords"><span class="keyword">Elevation</span><span class="keyword">Cards</span><span class="keyword">Motion</span><span class="keyword">Consistency</span></div>
+      </div>
+
+      <div class="ux-item" data-ux="4">
+        <div class="ux-item-label">2019 – 2020</div>
+        <div class="ux-item-title">Neumorphism</div>
+        <div class="ux-item-desc">Soft UI — extruded from the background. Paired inset/outset shadows created a tactile illusion. Beautiful but flawed: low contrast, accessibility nightmare. Trended on Dribbble, faded in production.</div>
+        <div class="ux-item-keywords"><span class="keyword">Soft UI</span><span class="keyword">Extrusion</span><span class="keyword">Low Contrast</span><span class="keyword">Dribbble</span></div>
+      </div>
+
+      <div class="ux-item" data-ux="5">
+        <div class="ux-item-label">2020 – 2022</div>
+        <div class="ux-item-title">Glassmorphism</div>
+        <div class="ux-item-desc">Frosted glass effects, backdrop blur, transparent layering. macOS Big Sur brought it mainstream. Beautiful over vivid gradients. The aesthetic era of show over function — gorgeous but often impractical.</div>
+        <div class="ux-item-keywords"><span class="keyword">Backdrop Blur</span><span class="keyword">Transparency</span><span class="keyword">Layering</span><span class="keyword">Big Sur</span></div>
+      </div>
+
+      <div class="ux-item" data-ux="6">
+        <div class="ux-item-label">2022 – 2026</div>
+        <div class="ux-item-title">Modern Minimalism</div>
+        <div class="ux-item-desc">Dark themes, monospace details, purposeful micro-animation. Brutalist touches, editorial layouts, GPU-accelerated motion. Performance and aesthetics united. Craft matters again — every pixel deliberate.</div>
+        <div class="ux-item-keywords"><span class="keyword">Dark Themes</span><span class="keyword">Motion</span><span class="keyword">Editorial</span><span class="keyword">Craft</span></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: sticky visual panel -->
+    <div class="ux-right">
+      <div class="ux-preview-stage">
+        <div class="ux-preview-bg"></div>
+        <div class="ux-label-panel">
+          <div class="ux-era-num" id="uxEraNum">01</div>
+          <div class="ux-era-name-display visible" id="uxEraName">Windows XP Era</div>
+        </div>
+        <div class="ux-mockup-wrap">
+
+          <!-- Mockup 0: XP -->
+          <div class="ux-mockup active" id="uxMock0">
+            <div style="width:100%;height:100%;background:#ece9d8;padding:8px;font-family:Tahoma,sans-serif;">
+              <div style="background:#000080;color:white;padding:3px 8px;font-size:11px;display:flex;justify-content:space-between;margin-bottom:2px;"><span>🌐 My Website</span><span style="cursor:pointer;">×</span></div>
+              <div style="background:#c0c0c0;padding:4px;border:2px inset #888;height:220px;">
+                <div style="background:#316ac5;color:white;padding:4px 8px;font-size:11px;margin-bottom:4px;cursor:pointer;">☆ Welcome to My Homepage!</div>
+                <div style="display:flex;gap:8px;margin-bottom:8px;">
+                  <div style="background:#316ac5;color:white;padding:2px 8px;font-size:10px;border:1px outset #888;cursor:pointer;">HOME</div>
+                  <div style="background:#316ac5;color:white;padding:2px 8px;font-size:10px;border:1px outset #888;cursor:pointer;">ABOUT</div>
+                  <div style="background:#316ac5;color:white;padding:2px 8px;font-size:10px;border:1px outset #888;cursor:pointer;">LINKS</div>
+                </div>
+                <div style="font-size:10px;line-height:1.6;color:#000;">
+                  <b>Welcome!</b> This site is best viewed in<br>Internet Explorer 6 at 800×600 px.<br><br>
+                  <span style="color:blue;text-decoration:underline;cursor:pointer;">Click here to enter →</span><br><br>
+                  <img style="width:88px;height:31px;background:#316ac5;display:inline-block;" title="Valid HTML 4.01">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mockup 1: Skeuomorphism -->
+          <div class="ux-mockup" id="uxMock1">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e,#0f3460);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;">
+              <div style="background:linear-gradient(to bottom,#4a9f4a,#2a7a2a);border:2px solid #1a5a1a;border-radius:10px;box-shadow:0 6px 12px rgba(0,0,0,0.5),inset 0 1px 1px rgba(255,255,255,0.2);padding:14px 28px;color:white;font-weight:bold;text-shadow:0 1px 2px rgba(0,0,0,0.5);cursor:pointer;font-size:14px;">✓ Submit Form</div>
+              <div style="background:linear-gradient(to bottom,#c0392b,#922b21);border:2px solid #641e16;border-radius:10px;box-shadow:0 6px 12px rgba(0,0,0,0.5),inset 0 1px 1px rgba(255,255,255,0.2);padding:14px 28px;color:white;font-weight:bold;text-shadow:0 1px 2px rgba(0,0,0,0.5);cursor:pointer;font-size:14px;">✕ Cancel</div>
+              <div style="background:linear-gradient(to bottom,#e0b050,#c08020);border:2px solid #906000;border-radius:8px;padding:12px;box-shadow:0 4px 8px rgba(0,0,0,0.4);color:white;font-size:12px;text-align:center;text-shadow:0 1px 1px rgba(0,0,0,0.5);">⭐ Premium Feature ⭐</div>
+            </div>
+          </div>
+
+          <!-- Mockup 2: Flat -->
+          <div class="ux-mockup" id="uxMock2">
+            <div style="width:100%;height:100%;background:#ecf0f1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;">
+              <div style="background:#2980b9;color:white;padding:12px 24px;font-family:sans-serif;font-size:14px;cursor:pointer;letter-spacing:0.03em;">Get Started</div>
+              <div style="display:flex;gap:8px;">
+                <div style="background:#e74c3c;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:20px;cursor:pointer;">+</div>
+                <div style="background:#2ecc71;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;cursor:pointer;">✓</div>
+                <div style="background:#f39c12;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;cursor:pointer;">★</div>
+              </div>
+              <div style="background:#bdc3c7;height:2px;width:80%;"></div>
+              <div style="font-family:sans-serif;font-size:11px;color:#7f8c8d;letter-spacing:0.05em;text-transform:uppercase;">Clean. Simple. Flat.</div>
+            </div>
+          </div>
+
+          <!-- Mockup 3: Material -->
+          <div class="ux-mockup" id="uxMock3">
+            <div style="width:100%;height:100%;background:#fafafa;display:flex;flex-direction:column;padding:0;overflow:hidden;">
+              <div style="background:#6200ea;color:white;padding:14px 16px;font-family:sans-serif;font-size:13px;font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.25);letter-spacing:0.05em;">MY APPLICATION</div>
+              <div style="flex:1;padding:16px;display:flex;flex-direction:column;gap:10px;">
+                <div style="background:white;border-radius:4px;padding:12px 16px;box-shadow:0 2px 4px rgba(0,0,0,0.15);font-family:sans-serif;font-size:12px;">
+                  <div style="font-weight:500;margin-bottom:4px;">Card Title</div>
+                  <div style="color:#757575;font-size:11px;">Supporting body text goes here</div>
+                </div>
+                <div style="background:white;border-radius:4px;padding:12px 16px;box-shadow:0 2px 4px rgba(0,0,0,0.15);font-family:sans-serif;font-size:12px;">
+                  <div style="font-weight:500;margin-bottom:4px;">Another Card</div>
+                  <div style="color:#757575;font-size:11px;">Material elevation and shadow</div>
+                </div>
+              </div>
+              <div style="position:absolute;bottom:20px;right:20px;background:#ff4081;width:44px;height:44px;border-radius:50%;box-shadow:0 4px 12px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;color:white;font-size:22px;cursor:pointer;">+</div>
+            </div>
+          </div>
+
+          <!-- Mockup 4: Neumorphism -->
+          <div class="ux-mockup" id="uxMock4">
+            <div style="width:100%;height:100%;background:#e0e5ec;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px;">
+              <div class="neu-card">🎵</div>
+              <div style="display:flex;gap:16px;">
+                <div style="width:36px;height:36px;border-radius:50%;background:#e0e5ec;box-shadow:4px 4px 8px #b8bec7,-4px -4px 8px #ffffff;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;">⏮</div>
+                <div style="width:36px;height:36px;border-radius:50%;background:#e0e5ec;box-shadow:4px 4px 8px #b8bec7,-4px -4px 8px #ffffff;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;">▶</div>
+                <div style="width:36px;height:36px;border-radius:50%;background:#e0e5ec;box-shadow:4px 4px 8px #b8bec7,-4px -4px 8px #ffffff;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;">⏭</div>
+              </div>
+              <div style="width:160px;height:4px;background:#e0e5ec;border-radius:2px;box-shadow:inset 2px 2px 4px #b8bec7,inset -2px -2px 4px #ffffff;overflow:hidden;"><div style="width:60%;height:100%;background:linear-gradient(to right,#6c63ff,#a78bfa);border-radius:2px;"></div></div>
+            </div>
+          </div>
+
+          <!-- Mockup 5: Glassmorphism -->
+          <div class="ux-mockup" id="uxMock5">
+            <div class="glass-bg-demo">
+              <div style="display:flex;flex-direction:column;gap:12px;width:100%;padding:8px;">
+                <div class="glass-card">
+                  <div style="color:rgba(255,255,255,0.6);font-size:10px;margin-bottom:4px;">BALANCE</div>
+                  <div style="color:white;font-size:20px;font-weight:600;">$4,291</div>
+                  <div style="color:rgba(255,255,255,0.5);font-size:10px;margin-top:4px;">+12.4% this month</div>
+                </div>
+                <div class="glass-card" style="background:rgba(255,255,255,0.05);">
+                  <div style="color:rgba(255,255,255,0.6);font-size:10px;margin-bottom:6px;">TRANSACTIONS</div>
+                  <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.8);">
+                    <span>Netflix</span><span style="color:#ff6b9d;">−$15</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.8);margin-top:4px;">
+                    <span>Salary</span><span style="color:#6bffb8;">+$3,200</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mockup 6: Modern -->
+          <div class="ux-mockup" id="uxMock6">
+            <div style="width:100%;height:100%;background:#020204;display:flex;flex-direction:column;padding:20px;font-family:'DM Mono',monospace;">
+              <div style="font-size:9px;letter-spacing:0.25em;color:#c8f03c;text-transform:uppercase;margin-bottom:16px;border-bottom:1px solid #1a1a22;padding-bottom:12px;">system.status // operational</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+                <div style="background:#0e0e16;border:1px solid #1a1a22;padding:12px;">
+                  <div style="font-size:8px;color:#6a6a7a;margin-bottom:4px;">COMPONENTS</div>
+                  <div style="font-size:22px;color:#c8f03c;">342</div>
+                </div>
+                <div style="background:#0e0e16;border:1px solid #1a1a22;padding:12px;">
+                  <div style="font-size:8px;color:#6a6a7a;margin-bottom:4px;">TOKENS</div>
+                  <div style="font-size:22px;color:#3cf0c8;">1.2K</div>
+                </div>
+              </div>
+              <div style="background:#0e0e16;border:1px solid rgba(200,240,60,0.2);padding:12px;flex:1;">
+                <div style="font-size:8px;color:#c8f03c;margin-bottom:8px;">PERFORMANCE</div>
+                <div style="height:2px;background:#1a1a22;margin-bottom:4px;position:relative;"><div style="position:absolute;left:0;top:0;height:100%;width:98%;background:#c8f03c;"></div></div>
+                <div style="font-size:8px;color:#6a6a7a;">Lighthouse 98 / 100</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="ux-era-indicator" id="uxDots">
+          <div class="ux-dot active" data-ux="0"></div>
+          <div class="ux-dot" data-ux="1"></div>
+          <div class="ux-dot" data-ux="2"></div>
+          <div class="ux-dot" data-ux="3"></div>
+          <div class="ux-dot" data-ux="4"></div>
+          <div class="ux-dot" data-ux="5"></div>
+          <div class="ux-dot" data-ux="6"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── DESIGN TOKENS ─── -->
+<section id="tokens">
+  <div class="bg-text" style="top:40%;right:-60px;">TOKENS</div>
+  <div class="tokens-inner">
+    <div class="tokens-header">
+      <div>
+        <div class="section-label reveal">04 / Tokens</div>
+        <h2 class="section-title reveal reveal-delay-1">DESIGN<br><span style="color:var(--accent)">TOKENS</span></h2>
+      </div>
+      <p class="section-body reveal" style="max-width:360px;margin-top:0;">The atomic unit of your design language. Platform-agnostic variables that power every component — from mobile to desktop, light to dark.</p>
+    </div>
+    <div class="color-swatches reveal">
+      <div class="swatch-group"><div class="swatch" style="background:#c8f03c;"></div><div class="swatch" style="background:#a8d020;"></div><div class="swatch" style="background:#88b010;"></div><div class="swatch" style="background:#608000;"></div><div class="swatch-label">Accent</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#3cf0c8;"></div><div class="swatch" style="background:#20d0a8;"></div><div class="swatch" style="background:#10b088;"></div><div class="swatch" style="background:#008068;"></div><div class="swatch-label">Teal</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#f03c6a;"></div><div class="swatch" style="background:#d02050;"></div><div class="swatch" style="background:#b01038;"></div><div class="swatch" style="background:#800020;"></div><div class="swatch-label">Coral</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#6060f0;"></div><div class="swatch" style="background:#4040d0;"></div><div class="swatch" style="background:#2020b0;"></div><div class="swatch" style="background:#000080;"></div><div class="swatch-label">Indigo</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#f0c03c;"></div><div class="swatch" style="background:#d0a020;"></div><div class="swatch" style="background:#b08010;"></div><div class="swatch" style="background:#806000;"></div><div class="swatch-label">Amber</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#3a3a4a;"></div><div class="swatch" style="background:#2a2a3a;"></div><div class="swatch" style="background:#1a1a22;"></div><div class="swatch" style="background:#020204;"></div><div class="swatch-label">Neutral</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#f0ede6;"></div><div class="swatch" style="background:#d0cdc6;"></div><div class="swatch" style="background:#b0ada6;"></div><div class="swatch" style="background:#908d86;"></div><div class="swatch-label">Surface</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:rgba(200,240,60,0.15);border:1px solid rgba(200,240,60,0.2);"></div><div class="swatch" style="background:rgba(200,240,60,0.08);border:1px solid rgba(200,240,60,0.1);"></div><div class="swatch" style="background:rgba(200,240,60,0.04);border:1px solid rgba(200,240,60,0.08);"></div><div class="swatch" style="background:rgba(200,240,60,0.02);border:1px solid rgba(200,240,60,0.05);"></div><div class="swatch-label">Ghost</div></div>
+    </div>
+    <div class="type-scale reveal">
+      <div class="type-row"><div class="type-spec">display / 120px<br>Bebas Neue</div><div class="type-sample" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,100px);line-height:1;color:var(--white);">Display</div></div>
+      <div class="type-row"><div class="type-spec">heading / 48px<br>DM Sans 300</div><div class="type-sample" style="font-size:clamp(24px,4vw,48px);font-weight:300;line-height:1.1;">Section Heading</div></div>
+      <div class="type-row"><div class="type-spec">body / 15px<br>DM Sans 300</div><div class="type-sample" style="font-size:15px;font-weight:300;color:var(--text-dim);line-height:1.85;max-width:480px;">Body text — legible, comfortable, editorial rhythm. 1.85 line-height for reading flow.</div></div>
+      <div class="type-row"><div class="type-spec">mono / 10px<br>DM Mono 400</div><div class="type-sample" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.2em;color:var(--accent);text-transform:uppercase;">LABEL / TAG / CODE / METADATA</div></div>
+    </div>
+    <div style="margin-top:60px;" class="reveal">
+      <div class="section-label">Spacing Scale</div>
+      <div class="spacing-viz">
+        <div class="spacing-bar" style="height:4px;" data-size="2"></div>
+        <div class="spacing-bar" style="height:8px;" data-size="4"></div>
+        <div class="spacing-bar" style="height:16px;" data-size="8"></div>
+        <div class="spacing-bar" style="height:24px;" data-size="12"></div>
+        <div class="spacing-bar" style="height:32px;" data-size="16"></div>
+        <div class="spacing-bar" style="height:48px;" data-size="24"></div>
+        <div class="spacing-bar" style="height:64px;" data-size="32"></div>
+        <div class="spacing-bar" style="height:96px;" data-size="48"></div>
+        <div class="spacing-bar" style="height:128px;" data-size="64"></div>
+        <div class="spacing-bar" style="height:192px;" data-size="96"></div>
+        <div class="spacing-bar" style="height:240px;" data-size="120"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ATOMIC ─── -->
+<section id="atomic">
+  <div class="bg-text" style="bottom:-40px;right:-80px;">ATOMIC</div>
+  <div class="atomic-inner">
+    <div class="section-label reveal">05 / Architecture</div>
+    <h2 class="section-title reveal reveal-delay-1">ATOMIC<br><span style="color:var(--accent)">DESIGN</span></h2>
+    <p class="section-body reveal reveal-delay-2" style="max-width:600px;">Brad Frost's atomic design breaks UI into five distinct levels — each building upon the previous, enabling true component-driven development at any scale.</p>
+    <div class="atomic-levels">
+      <div class="level-card reveal"><div class="level-number">1</div><div class="level-icon-area"><div class="atom-demo"><div class="atom-badge">NEW</div><button class="atom-btn">CTA</button><input class="atom-input" placeholder="Search..."></div></div><div class="level-name">Level 01</div><div class="level-title">Atoms</div><div class="level-desc">Buttons, inputs, badges, icons. Single responsibility. Indivisible.</div></div>
+      <div class="level-card reveal reveal-delay-1"><div class="level-number">2</div><div class="level-icon-area"><div class="molecule-card-demo"><div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;"><div style="width:28px;height:28px;border-radius:50%;background:var(--accent);flex-shrink:0;"></div><div><div style="font-size:10px;font-weight:500;margin-bottom:2px;">John Doe</div><div style="font-size:9px;color:var(--text-dim);">Engineering</div></div></div><div style="display:flex;gap:5px;"><span class="atom-badge">React</span><span class="atom-badge">TS</span></div></div></div><div class="level-name">Level 02</div><div class="level-title">Molecules</div><div class="level-desc">Atoms combined into functional units. Simple, focused, purposeful.</div></div>
+      <div class="level-card reveal reveal-delay-2"><div class="level-number">3</div><div class="level-icon-area"><div style="background:#060610;border:1px solid var(--muted);padding:10px;width:180px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid var(--muted);"><span style="font-size:9px;font-weight:500;">Product Card</span><span class="atom-badge">★4.9</span></div><div style="height:36px;background:var(--muted);margin-bottom:6px;"></div><div style="font-size:9px;color:var(--text-dim);margin-bottom:6px;font-weight:300;line-height:1.5;">Premium widget included.</div><button class="atom-btn" style="width:100%;font-size:8px;">ADD TO CART</button></div></div><div class="level-name">Level 03</div><div class="level-title">Organisms</div><div class="level-desc">Complex self-contained UI sections with distinct purpose.</div></div>
+      <div class="level-card reveal reveal-delay-3"><div class="level-number">4</div><div class="level-icon-area"><div style="background:#060610;border:1px solid var(--muted);padding:8px;width:180px;"><div style="display:flex;gap:4px;margin-bottom:6px;font-size:8px;font-family:'DM Mono',mono;color:var(--text-dim);"><span>HOME</span><span>|</span><span>SHOP</span><span>|</span><span>ABOUT</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;"><div style="background:var(--muted);height:44px;"></div><div style="background:var(--muted);height:44px;"></div></div><div style="background:var(--muted);height:16px;margin-top:3px;"></div></div></div><div class="level-name">Level 04</div><div class="level-title">Templates</div><div class="level-desc">Page-level structural blueprints. IA without real content.</div></div>
+      <div class="level-card reveal reveal-delay-4"><div class="level-number">5</div><div class="level-icon-area"><div style="background:#060610;border:1px solid rgba(200,240,60,0.3);padding:8px;width:180px;position:relative;"><div style="position:absolute;top:0;right:0;background:var(--accent);color:var(--black);font-size:7px;padding:2px 6px;font-family:'DM Mono',mono;letter-spacing:0.1em;">LIVE</div><div style="font-size:8px;font-family:'DM Mono',mono;color:var(--accent);margin-bottom:5px;">shop.brand.com</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;"><div style="background:var(--muted);height:36px;"></div><div style="background:var(--muted);height:36px;"></div><div style="background:var(--muted);height:36px;"></div><div style="background:var(--muted);height:36px;"></div></div></div></div><div class="level-name">Level 05</div><div class="level-title">Pages</div><div class="level-desc">Templates with real content. Where design meets reality.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── DOMAINS ─── -->
+<section id="domains">
+  <div class="bg-text" style="top:10%;right:-80px;font-size:clamp(80px,20vw,320px);">DOMAIN</div>
+  <div style="max-width:1400px;margin:0 auto;padding-bottom:80px;position:relative;z-index:1;">
+    <div class="section-label reveal">06 / Applications</div>
+    <h2 class="section-title reveal reveal-delay-1">DOMAIN<br><span style="color:var(--accent)">COVERAGE</span></h2>
+    <p class="section-body reveal reveal-delay-2" style="max-width:500px;">One design system. Four distinct domains. Each with its own patterns, challenges, and user expectations — unified by shared tokens and components.</p>
+  </div>
+  <div class="domains-grid" id="domainsGrid">
+
+    <!-- E-COMMERCE -->
+    <div class="domain-card" data-domain="0">
+      <div class="card-sweep"></div>
+      <svg class="domain-ring-wrap" viewBox="0 0 44 44">
+        <circle class="domain-ring-bg" cx="22" cy="22" r="18" stroke-width="1.5"/>
+        <circle class="domain-ring-fill" cx="22" cy="22" r="18" stroke-width="1.5" stroke-dasharray="113" stroke-dashoffset="113"/>
+      </svg>
+      <div class="domain-num">01</div>
+      <div class="domain-icon">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      </div>
+      <div class="domain-type">Commerce</div>
+      <div class="domain-title">E-COMMERCE</div>
+      <div class="domain-desc">High-conversion storefronts, product discovery systems, and checkout flows optimized for mobile-first global scale.</div>
+      <div class="domain-features">
+        <div class="domain-feature"><div class="domain-feature-dot"></div>Product card system with variant selectors</div>
+        <div class="domain-feature"><div class="domain-feature-dot"></div>Cart & checkout micro-interactions</div>
+        <div class="domain-feature"><div class="domain-feature-dot"></div>Search with faceted filtering</div>
+        <div class="domain-feature"><div class="domain-feature-dot"></div>PWA-ready, offline support</div>
+      </div>
+      <div class="domain-stat-bar">
+        <div class="domain-stat"><div class="domain-stat-val">3.2%</div><div class="domain-stat-label">Avg CVR</div></div>
+        <div class="domain-stat"><div class="domain-stat-val">98</div><div class="domain-stat-label">Perf Score</div></div>
+        <div class="domain-stat"><div class="domain-stat-val">A11Y</div><div class="domain-stat-label">WCAG AAA</div></div>
+      </div>
+    </div>
+
+    <!-- ENTERPRISE -->
+    <div class="domain-card" data-domain="1">
+      <div class="card-sweep"></div>
+      <svg class="domain-ring-wrap" viewBox="0 0 44 44">
+        <circle class="domain-ring-bg" cx="22" cy="22" r="18" stroke-width="1.5"/>
+        <circle class="domain-ring-fill" cx="22" cy="22" r="18" stroke-width="1.5" stroke-dasharray="113" stroke-dashoffset="113"/>
+      </svg>
+      <div class="domain-num">02</div>
+      <div class="domain-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8h10M7 12h6"/></svg>
+      </div>
+      <div class="domain-type">Enterprise</div>
+      <div class="domain-title">ENTERPRISE</div>
+      <div class="domain-desc">Dense data tables, complex forms, role-based dashboards, and audit trails — built for power users who live in the product 8+ hours a day.</div>
+      <div class="domain-features">
+        <div class="domain-feature"><div class="domain-feature-dot"></div>Data grid with virtualization</div>
+        <div class="domain-feature"><div class="domain-feature-dot"></div>Multi-step form wizards</div>
+        <div class="domain-feature"><div class="domain-feature-dot"></div>RBAC permission-aware components</div>
+        <div class="domain-feature"><div class="domain-feature-dot"></div>Real-time collaboration primitives</div>
+      </div>
+      <div class="domain-stat-bar">
+        <div class="domain-stat"><div class="domain-stat-val">500+</div><div class="domain-stat-label">Components</div></div>
+        <div class="domain-stat"><div class="domain-stat-val">∞</div><div class="domain-stat-label">Scale</div></div>
+        <div class="domain-stat"><div class="domain-stat-val">Zero</div><div class="domain-stat-label">Downtime</div></div>
+      </div>
+    </div>
+
+    <!-- B2B SAAS -->
+    <div class="domain-card" data-domain="2">
+      <div class="card-sweep"></div>
+      <svg class="domain-ring-wrap" viewBox="0 0 44 44">
+        <circle class="domain-ring-bg" cx="22" cy="22" r="18" stroke-width="1.5"/>
+        <circle class="domain-ring-fill" cx="22" cy="22" r="18" stroke-width="1.5" stroke-dasharray="113" stroke-dashoffset="113"/>
+      </svg>
+      <div class="domain-num">03</div>
+      <div class="domain-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="domain-type">Business</div>
+      <div class="domain-title">B2B SAAS</div>
+      <div class="domain-desc">Multi-tenant architectures, white-label theming, API-driven dashboards, and integration marketplaces built for enterprise buyers.</div>
+      <div class="domain-features">
+        <div class="domain-feature"><div class="domain-feature-dot"></div>Tenant-aware theming engine</div>
+        <div class="domain-feature"><div class="domain-feature-dot"></div>Analytics dashboards & charts</div>
+        <div class="domain-feature"><div class="domain-feature-dot"></div>Billing & subscription UI</div>
+        <div class="domain-feature"><div class="domain-feature-dot"></div>Team & workspace management</div>
+      </div>
+      <div class="domain-stat-bar">
+        <div class="domain-stat"><div class="domain-stat-val">MT</div><div class="domain-stat-label">Multi-tenant</div></div>
+        <div class="domain-stat"><div class="domain-stat-val">API</div><div class="domain-stat-label">First</div></div>
+        <div class="domain-stat"><div class="domain-stat-val">99.9%</div><div class="domain-stat-label">Uptime SLA</div></div>
+      </div>
+    </div>
+
+    <!-- B2C -->
+    <div class="domain-card" data-domain="3">
+      <div class="card-sweep"></div>
+      <svg class="domain-ring-wrap" viewBox="0 0 44 44">
+        <circle class="domain-ring-bg" cx="22" cy="22" r="18" stroke-width="1.5"/>
+        <circle class="domain-ring-fill" cx="22" cy="22" r="18" stroke-width="1.5" stroke-dasharray="113" stroke-dashoffset="113"/>
+      </svg>
+      <div class="domain-num">04</div>
+      <div class="domain-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
+      <div class="domain-type">Consumer</div>
+      <div class="domain-title">B2C APPS</div>
+      <div class="domain-desc">Emotional design, delight-driven interactions, onboarding sequences, and social features that drive engagement and long-term retention.</div>
+      <div class="domain-features">
+        <div class="domain-feature"><div class="domain-feature-dot"></div>Onboarding & activation flows</div>
+        <div class="domain-feature"><div class="domain-feature-dot"></div>Gamification & reward systems</div>
+        <div class="domain-feature"><div class="domain-feature-dot"></div>Personalization & recommendation UI</div>
+        <div class="domain-feature"><div class="domain-feature-dot"></div>Social sharing & referral UI</div>
+      </div>
+      <div class="domain-stat-bar">
+        <div class="domain-stat"><div class="domain-stat-val">4.8★</div><div class="domain-stat-label">App Rating</div></div>
+        <div class="domain-stat"><div class="domain-stat-val">60%</div><div class="domain-stat-label">Retention</div></div>
+        <div class="domain-stat"><div class="domain-stat-val">D7</div><div class="domain-stat-label">Engagement</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── ACCESSIBILITY ─── -->
+<section id="accessibility">
+  <div class="bg-text" style="top:30%;left:-60px;">A11Y</div>
+  <div class="a11y-inner">
+    <div>
+      <div class="section-label reveal">07 / Accessibility</div>
+      <h2 class="section-title reveal reveal-delay-1">ACCESS<br>FOR<br><span style="color:var(--accent)">ALL</span></h2>
+      <p class="section-body reveal reveal-delay-2">Accessibility isn't a feature — it's the foundation. Every component ships WCAG 2.2 compliant, keyboard navigable, and screen reader tested.</p>
+      <div class="wcag-levels reveal reveal-delay-3">
+        <div class="wcag-row"><div class="wcag-level a">A</div><div class="wcag-info"><div class="wcag-name">Level A — Minimum</div><div class="wcag-desc">Essential requirements: text alternatives, keyboard access, no seizure triggers.</div></div></div>
+        <div class="wcag-row"><div class="wcag-level aa">AA</div><div class="wcag-info"><div class="wcag-name">Level AA — Standard</div><div class="wcag-desc">4.5:1 contrast ratio, resize text, no keyboard traps. Legal standard. Our baseline.</div></div></div>
+        <div class="wcag-row"><div class="wcag-level aaa">AAA</div><div class="wcag-info"><div class="wcag-name">Level AAA — Enhanced</div><div class="wcag-desc">7:1 contrast, no timing requirements. We target this for all critical journeys.</div></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="section-label reveal">Contrast Ratios</div>
+      <div class="contrast-demo reveal reveal-delay-1">
+        <div class="contrast-pair"><div class="contrast-swatch" style="background:#c8f03c;color:#020204;">Aa</div><div><div class="contrast-ratio" style="color:var(--accent);">13.4:1</div><div class="contrast-label">Accent on Dark</div></div><div class="contrast-pass pass">AAA</div></div>
+        <div class="contrast-pair"><div class="contrast-swatch" style="background:#f0ede6;color:#020204;">Aa</div><div><div class="contrast-ratio" style="color:var(--white);">18.1:1</div><div class="contrast-label">White on Black</div></div><div class="contrast-pass pass">AAA</div></div>
+        <div class="contrast-pair"><div class="contrast-swatch" style="background:#6a6a7a;color:#020204;">Aa</div><div><div class="contrast-ratio" style="color:var(--text-dim);">3.2:1</div><div class="contrast-label">Muted on Dark</div></div><div class="contrast-pass fail">FAIL</div></div>
+        <div class="contrast-pair"><div class="contrast-swatch" style="background:#3cf0c8;color:#020204;">Aa</div><div><div class="contrast-ratio" style="color:var(--accent2);">11.8:1</div><div class="contrast-label">Teal on Dark</div></div><div class="contrast-pass pass">AAA</div></div>
+      </div>
+      <div class="progress-section reveal reveal-delay-2">
+        <div class="section-label" style="margin-bottom:24px;">Compliance Coverage</div>
+        <div class="progress-item"><div class="progress-header"><span>Keyboard Navigation</span><span>100%</span></div><div class="progress-track"><div class="progress-fill" style="width:100%;"></div></div></div>
+        <div class="progress-item"><div class="progress-header"><span>Screen Reader Support</span><span>97%</span></div><div class="progress-track"><div class="progress-fill" style="width:97%;"></div></div></div>
+        <div class="progress-item"><div class="progress-header"><span>Color Contrast AA</span><span>100%</span></div><div class="progress-track"><div class="progress-fill" style="width:100%;"></div></div></div>
+        <div class="progress-item"><div class="progress-header"><span>Focus Management</span><span>94%</span></div><div class="progress-track"><div class="progress-fill" style="width:94%;"></div></div></div>
+        <div class="progress-item"><div class="progress-header"><span>ARIA Compliance</span><span>98%</span></div><div class="progress-track"><div class="progress-fill" style="width:98%;"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TECH STACK ─── -->
+<section id="techstack">
+  <div style="margin-bottom:60px;">
+    <div class="section-label reveal">08 / Stack</div>
+    <h2 class="section-title reveal reveal-delay-1">MODERN<br><span style="color:var(--accent)">TOOLCHAIN</span></h2>
+  </div>
+  <div class="tech-marquee-wrap">
+    <div class="tech-marquee">
+      <div class="tech-item"><div class="tech-item-name">React 19</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">TypeScript 5</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Vite 6</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Tailwind 4</div><div class="tech-item-year">2025</div></div>
+      <div class="tech-item"><div class="tech-item-name">Next.js 15</div><div class="tech-item-year">2025</div></div>
+      <div class="tech-item"><div class="tech-item-name">Radix UI</div><div class="tech-item-year">2023</div></div>
+      <div class="tech-item"><div class="tech-item-name">shadcn/ui</div><div class="tech-item-year">2023</div></div>
+      <div class="tech-item"><div class="tech-item-name">Storybook 8</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Framer Motion</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">TanStack Query</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Zustand</div><div class="tech-item-year">2023</div></div>
+      <div class="tech-item"><div class="tech-item-name">Zod</div><div class="tech-item-year">2023</div></div>
+      <!-- duplicate -->
+      <div class="tech-item"><div class="tech-item-name">React 19</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">TypeScript 5</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Vite 6</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Tailwind 4</div><div class="tech-item-year">2025</div></div>
+      <div class="tech-item"><div class="tech-item-name">Next.js 15</div><div class="tech-item-year">2025</div></div>
+      <div class="tech-item"><div class="tech-item-name">Radix UI</div><div class="tech-item-year">2023</div></div>
+      <div class="tech-item"><div class="tech-item-name">shadcn/ui</div><div class="tech-item-year">2023</div></div>
+      <div class="tech-item"><div class="tech-item-name">Storybook 8</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Framer Motion</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">TanStack Query</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Zustand</div><div class="tech-item-year">2023</div></div>
+      <div class="tech-item"><div class="tech-item-name">Zod</div><div class="tech-item-year">2023</div></div>
+    </div>
+  </div>
+  <div class="tech-marquee-wrap" style="margin-top:10px;">
+    <div class="tech-marquee tech-marquee-rev">
+      <div class="tech-item"><div class="tech-item-name">Figma Tokens</div><div class="tech-item-year">2023</div></div>
+      <div class="tech-item"><div class="tech-item-name">Playwright</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Vitest</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">StyleX</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Panda CSS</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Design Tokens W3C</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Turbopack</div><div class="tech-item-year">2025</div></div>
+      <div class="tech-item"><div class="tech-item-name">Module Federation</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">MSW</div><div class="tech-item-year">2023</div></div>
+      <div class="tech-item"><div class="tech-item-name">Chromatic</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">OpenTelemetry</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">CSS Modules</div><div class="tech-item-year">2023</div></div>
+      <!-- duplicate -->
+      <div class="tech-item"><div class="tech-item-name">Figma Tokens</div><div class="tech-item-year">2023</div></div>
+      <div class="tech-item"><div class="tech-item-name">Playwright</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Vitest</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">StyleX</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Panda CSS</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Design Tokens W3C</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">Turbopack</div><div class="tech-item-year">2025</div></div>
+      <div class="tech-item"><div class="tech-item-name">Module Federation</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">MSW</div><div class="tech-item-year">2023</div></div>
+      <div class="tech-item"><div class="tech-item-name">Chromatic</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">OpenTelemetry</div><div class="tech-item-year">2024</div></div>
+      <div class="tech-item"><div class="tech-item-name">CSS Modules</div><div class="tech-item-year">2023</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PERFORMANCE ─── -->
+<section id="performance">
+  <div class="perf-inner">
+    <div class="section-label reveal">09 / Performance</div>
+    <h2 class="section-title reveal reveal-delay-1">CORE<br><span style="color:var(--accent)">WEB VITALS</span></h2>
+    <div class="perf-metrics">
+      <div class="metric-card reveal"><div class="metric-val"><span class="count-up" data-target="98">0</span></div><div class="metric-name">Lighthouse Score</div><div class="metric-desc">Performance budget enforced at CI. Zero regressions, every deploy.</div></div>
+      <div class="metric-card reveal reveal-delay-1"><div class="metric-val"><span class="count-up" data-target="1.2">0</span><span class="metric-unit">s</span></div><div class="metric-name">LCP — Largest Contentful Paint</div><div class="metric-desc">Critical resource preloading and image optimization pipeline.</div></div>
+      <div class="metric-card reveal reveal-delay-2"><div class="metric-val"><span class="count-up" data-target="0.05">0</span></div><div class="metric-name">CLS — Cumulative Layout Shift</div><div class="metric-desc">Dimension-reserved containers eliminate layout thrash.</div></div>
+      <div class="metric-card reveal reveal-delay-3"><div class="metric-val"><span class="count-up" data-target="60">0</span><span class="metric-unit">ms</span></div><div class="metric-name">INP — Interaction to Next Paint</div><div class="metric-desc">Deferred non-critical work. Web Worker offloading.</div></div>
+    </div>
+    <div class="vitals-bars reveal" style="margin-top:80px;">
+      <div class="section-label" style="margin-bottom:32px;">Performance Breakdown</div>
+      <div class="vital-row"><div class="vital-name">FCP</div><div class="vital-bar-bg"><div class="vital-bar-fill" style="width:92%;"></div></div><div class="vital-score">0.8s</div></div>
+      <div class="vital-row"><div class="vital-name">LCP</div><div class="vital-bar-bg"><div class="vital-bar-fill" style="width:88%;"></div></div><div class="vital-score">1.2s</div></div>
+      <div class="vital-row"><div class="vital-name">TTI</div><div class="vital-bar-bg"><div class="vital-bar-fill" style="width:82%;"></div></div><div class="vital-score">2.1s</div></div>
+      <div class="vital-row"><div class="vital-name">TBT</div><div class="vital-bar-bg"><div class="vital-bar-fill" style="width:95%;"></div></div><div class="vital-score">42ms</div></div>
+      <div class="vital-row"><div class="vital-name">CLS</div><div class="vital-bar-bg"><div class="vital-bar-fill" style="width:99%;"></div></div><div class="vital-score">0.05</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FRAMEWORKS ─── -->
+<section id="frameworks" style="padding:140px 60px;background:var(--mid2);">
+  <div class="fw-inner">
+    <div class="section-label reveal">10 / Frameworks</div>
+    <h2 class="section-title reveal reveal-delay-1">CHOOSE<br>YOUR<br><span style="color:var(--accent)">STACK</span></h2>
+    <div class="fw-comparison">
+      <div class="fw-card reveal"><div class="fw-logo">REACT</div><div class="fw-version">v19.0 — 2024</div><div class="fw-desc">The component model that changed everything. Server Components, Actions, and the new compiler make React 19 faster than ever. The industry standard.</div><div class="fw-stats"><div><div class="fw-stat-val" style="color:var(--accent);">47M</div><div class="fw-stat-label">Weekly Downloads</div></div><div><div class="fw-stat-val" style="color:var(--accent);">70%</div><div class="fw-stat-label">Market Share</div></div></div></div>
+      <div class="fw-card featured reveal reveal-delay-1"><div class="fw-featured-badge">Recommended</div><div class="fw-logo">NEXT</div><div class="fw-version">v15.0 — 2025</div><div class="fw-desc">The production React framework. App Router, Server Actions, Turbopack, and edge-native architecture. The complete solution at any scale.</div><div class="fw-stats"><div><div class="fw-stat-val" style="color:var(--accent);">8M</div><div class="fw-stat-label">Weekly Downloads</div></div><div><div class="fw-stat-val" style="color:var(--accent);">Full</div><div class="fw-stat-label">RSC Support</div></div></div></div>
+      <div class="fw-card reveal reveal-delay-2"><div class="fw-logo">VITE</div><div class="fw-version">v6.0 — 2024</div><div class="fw-desc">The build tool that killed slow dev servers. Native ESM, HMR in milliseconds, framework-agnostic. Now the default for React, Vue, and Svelte.</div><div class="fw-stats"><div><div class="fw-stat-val" style="color:var(--accent);">20M</div><div class="fw-stat-label">Weekly Downloads</div></div><div><div class="fw-stat-val" style="color:var(--accent);">10×</div><div class="fw-stat-label">Faster than CRA</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MANIFESTO ─── -->
+<section id="manifesto">
+  <div class="manifesto-bg"></div>
+  <div class="manifesto-grid"></div>
+  <div class="manifesto-content">
+    <div class="section-label reveal" style="justify-content:center;">11 / Principles</div>
+    <h2 class="manifesto-title reveal reveal-delay-1">THE<br><span style="color:var(--accent)">MODERN</span><br>FRONTEND</h2>
+    <p class="section-body reveal reveal-delay-2" style="text-align:center;max-width:560px;margin:0 auto;">Great frontend engineering is invisible. Users don't see the system — they feel it. Speed, clarity, accessibility, and delight in every interaction.</p>
+    <div class="manifesto-principles">
+      <div class="principle reveal"><div class="principle-num">01</div><div class="principle-title">Design Tokens First</div><div class="principle-text">Every visual decision lives in a token. Colors, spacing, motion — all variables. This enables instant theming, dark mode, and brand consistency at scale.</div></div>
+      <div class="principle reveal reveal-delay-1"><div class="principle-num">02</div><div class="principle-title">Accessibility is Non-Negotiable</div><div class="principle-text">We don't add accessibility after the fact. It's built into the component contract from day one — ARIA, keyboard navigation, focus management.</div></div>
+      <div class="principle reveal reveal-delay-2"><div class="principle-num">03</div><div class="principle-title">Performance as UX</div><div class="principle-text">Every kilobyte has a cost. Performance is a user experience decision. Budget-driven, Core Web Vitals monitored, enforced at CI level.</div></div>
+      <div class="principle reveal"><div class="principle-num">04</div><div class="principle-title">Components over Pages</div><div class="principle-text">Think in components, not pages. A well-designed component system makes pages an afterthought. Reusability is architecture.</div></div>
+      <div class="principle reveal reveal-delay-1"><div class="principle-num">05</div><div class="principle-title">DX Drives Velocity</div><div class="principle-text">Developer experience is product velocity. Typed components, living documentation, and fast feedback loops make teams ship better, faster.</div></div>
+      <div class="principle reveal reveal-delay-2"><div class="principle-num">06</div><div class="principle-title">Systems Outlive Products</div><div class="principle-text">Products change. Systems endure. Build your design system for the product you'll have in five years. Scalability is a design choice.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">FD<span>S</span></div>
+      <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);margin-top:8px;letter-spacing:0.1em;">Frontend Design System — 2005 → 2026</div>
+    </div>
+    <div class="footer-copy-block">
+      <div class="footer-copy-main">© All copyright reserved by <span style="color:var(--accent);font-weight:500;">Smruti Ranjan Behera</span></div>
+      <div class="footer-copy-sub">
+        <span>Principal Enterprise Architect – UI/UX</span> · Enterprise Frontend Platforms · React Ecosystem
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ─── TIMELINE DATA ───
+const tlData = [
+  { year:'2005', era:'The Dark Ages', title:'Table Layouts & jQuery Dawn', desc:'Websites built with nested tables, inline styles. Internet Explorer 6 dictated everything. jQuery 1.0 launched — AJAX became accessible. The web finally felt dynamic.', tags:['HTML4','CSS2','jQuery','Flash','IE6'] },
+  { year:'2008', era:'Mobile Awakening', title:'CSS3 & the iPhone Effect', desc:'iPhone launched in 2007. Mobile web forced designers to rethink everything. CSS3 brought gradients, animations, transitions. HTML5 standardized video and audio.', tags:['HTML5','CSS3','Sass','Mobile','WebKit'] },
+  { year:'2011', era:'Responsive Revolution', title:'Bootstrap & Responsive Design', desc:'Ethan Marcotte coined "Responsive Web Design." Bootstrap 2.0 democratized UI development. Grid systems became standard. Mobile-first philosophy emerged as doctrine.', tags:['Bootstrap','Media Queries','LESS','Backbone.js'] },
+  { year:'2013', era:'Component Era Begins', title:'React & Flat Design', desc:'Facebook open-sourced React. iOS 7 brought flat design. The component model changed how we think about UI — composable, declarative, state-driven. A paradigm shift.', tags:['React','Flat Design','Angular.js','Grunt'] },
+  { year:'2015', era:'Ecosystem Explosion', title:'Material Design & ES6', desc:'Google\'s Material Design set new standards. ES6 transformed JavaScript. Webpack, npm, and the modern toolchain emerged. Redux brought predictable state management.', tags:['Material Design','ES6','Redux','Webpack','Vue.js'] },
+  { year:'2017', era:'Design Systems Rise', title:'Figma, CSS Grid & DX Focus', desc:'Figma launched and changed collaboration forever. CSS Grid replaced float hacks. Design systems became a discipline. Ant Design, Fluent, Carbon emerged as enterprise standards.', tags:['Figma','CSS Grid','Ant Design','Storybook'] },
+  { year:'2019', era:'Utility-First Wave', title:'Tailwind CSS & React Hooks', desc:'Tailwind CSS challenged everything. React Hooks killed class components. Next.js became the go-to for production React. Neumorphism trended briefly, then faded.', tags:['Tailwind','React Hooks','Next.js','TypeScript'] },
+  { year:'2021', era:'Micro-Frontend Age', title:'Islands, RSC & Design Tokens', desc:'React Server Components previewed. Vite replaced Webpack for DX. W3C Design Tokens standard proposed. Islands architecture gained traction for performance.', tags:['Vite','RSC','Design Tokens','Radix UI'] },
+  { year:'2023', era:'AI-Augmented Dev', title:'AI Tools & Performance Era', desc:'GitHub Copilot, v0, Cursor transformed DX. Server Components shipped in Next.js 13+. Core Web Vitals became ranking signals. shadcn/ui changed component distribution.', tags:['AI Dev Tools','shadcn/ui','Core Web Vitals','App Router'] },
+  { year:'2026', era:'Now', title:'React 19+ & Modern Minimalism', desc:'React 19 Actions, Server Functions. Modern minimalism with rich motion. Design systems as product. Accessibility-first. AI code generation standard. The future is component-first.', tags:['React 19','Server Actions','Motion','AI-First','Web Components'] }
+];
+
+const uxData = [
+  { num:'01', name:'Windows XP Era' },
+  { num:'02', name:'Skeuomorphism Peak' },
+  { num:'03', name:'Flat Design Era' },
+  { num:'04', name:'Material Design' },
+  { num:'05', name:'Neumorphism' },
+  { num:'06', name:'Glassmorphism' },
+  { num:'07', name:'Modern Minimalism' }
+];
+
+// ─── LOADER ───
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('exit');
+    setTimeout(() => {
+      document.getElementById('loader').style.display = 'none';
+    }, 900);
+  }, 3200);
+});
+
+// ─── CURSOR ───
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+let isHovering = false;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = (mx - 3) + 'px';
+  cursor.style.top = (my - 3) + 'px';
+});
+
+function lerpRing() {
+  const ease = isHovering ? 0.10 : 0.14;
+  rx += (mx - rx - 16) * ease;
+  ry += (my - ry - 16) * ease;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(lerpRing);
+}
+lerpRing();
+
+document.querySelectorAll('a,button,.pillar-card,.domain-card,.level-card,.tl-item,.ux-item,.metric-card,.fw-card,.principle,.swatch,.tech-item,.wcag-row').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.classList.add('hover'); ring.classList.add('hover'); isHovering = true; });
+  el.addEventListener('mouseleave', () => { cursor.classList.remove('hover'); ring.classList.remove('hover'); isHovering = false; });
+});
+
+// ─── PARTICLES ───
+const particlesEl = document.getElementById('particles');
+function createParticle() {
+  const p = document.createElement('div');
+  p.classList.add('particle');
+  const size = Math.random() * 3 + 1;
+  p.style.cssText = `
+    width:${size}px;height:${size}px;
+    left:${Math.random()*100}%;
+    animation-duration:${Math.random()*8+6}s;
+    animation-delay:${Math.random()*5}s;
+  `;
+  particlesEl.appendChild(p);
+  setTimeout(() => p.remove(), 14000);
+}
+setInterval(createParticle, 400);
+for(let i=0;i<8;i++) createParticle();
+
+// ─── NAV SCROLL ───
+const mainNav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  mainNav.classList.toggle('scrolled', window.scrollY > 60);
+}, {passive:true});
+
+// ─── REVEAL ───
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ─── PROGRESS BARS ───
+const progObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.querySelectorAll('.progress-fill,.vital-bar-fill').forEach(b => b.classList.add('animated'));
+    }
+  });
+}, {threshold:0.2});
+document.querySelectorAll('.progress-section,.vitals-bars').forEach(el => progObs.observe(el));
+
+// ─── COUNT UP ───
+function animCount(el) {
+  const target = parseFloat(el.dataset.target);
+  const isFloat = String(target).includes('.');
+  const dur = 2000;
+  const start = performance.now();
+  function tick(now) {
+    const p = Math.min((now-start)/dur,1);
+    const e = 1-Math.pow(1-p,3);
+    el.textContent = isFloat ? (target*e).toFixed(2) : Math.round(target*e);
+    if(p<1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+const countObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.querySelectorAll('.count-up').forEach(animCount);
+      countObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.3});
+document.querySelectorAll('.perf-metrics').forEach(el => countObs.observe(el));
+
+// ─── PARALLAX (GPU-accelerated) ───
+const parallaxEls = document.querySelectorAll('[data-parallax]');
+let lastScrollY = 0, ticking = false;
+
+function updateParallax() {
+  const sy = window.scrollY;
+  parallaxEls.forEach(el => {
+    const speed = parseFloat(el.dataset.parallax);
+    const rect = el.closest('section')?.getBoundingClientRect();
+    if(rect) {
+      const offset = (rect.top + sy) * speed;
+      el.style.transform = `translate3d(0, ${offset * 0.3}px, 0)`;
+    }
+  });
+
+  // bg texts
+  document.querySelectorAll('.bg-text').forEach(el => {
+    const rect = el.parentElement.getBoundingClientRect();
+    if(rect.top < window.innerHeight && rect.bottom > 0) {
+      const progress = -rect.top / (rect.height + window.innerHeight);
+      el.style.transform = `translate3d(0, ${progress * 80}px, 0)`;
+    }
+  });
+
+  ticking = false;
+}
+
+window.addEventListener('scroll', () => {
+  if(!ticking) { requestAnimationFrame(updateParallax); ticking = true; }
+}, {passive:true});
+
+// ─── TIMELINE SCROLL SYNC ───
+const tlItems = document.querySelectorAll('.tl-item');
+const tlRight = document.querySelector('.timeline-right');
+const tlDisplay = document.getElementById('tlDisplay');
+let activeTlIdx = 0;
+
+function updateTl(idx) {
+  if(idx === activeTlIdx && idx > 0) return;
+  activeTlIdx = idx;
+  const d = tlData[idx];
+
+  // Clear all visible classes
+  tlDisplay.querySelectorAll('.tl-active-year,.tl-active-era,.tl-active-title,.tl-active-desc,.tl-active-tags').forEach(el => el.classList.remove('visible'));
+
+  setTimeout(() => {
+    document.getElementById('tlYear').textContent = d.year;
+    document.getElementById('tlEra').textContent = d.era;
+    document.getElementById('tlTitle').textContent = d.title;
+    document.getElementById('tlDesc').textContent = d.desc;
+
+    const tagsEl = document.getElementById('tlTags');
+    tagsEl.innerHTML = d.tags.map(t => `<span class="tag">${t}</span>`).join('');
+
+    requestAnimationFrame(() => {
+      tlDisplay.querySelectorAll('.tl-active-year,.tl-active-era,.tl-active-title,.tl-active-desc,.tl-active-tags').forEach(el => el.classList.add('visible'));
+    });
+  }, 80);
+
+  document.getElementById('tlNum').textContent = String(idx+1).padStart(2,'0');
+
+  tlItems.forEach((item,i) => item.classList.toggle('active', i===idx));
+
+  // Progress
+  const prog = (idx / (tlItems.length-1)) * 100;
+  document.getElementById('tlProgressFill').style.height = prog + '%';
+  document.getElementById('tlTrackProg').style.height = prog + '%';
+}
+
+const tlScrollObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting && e.intersectionRatio > 0.5) {
+      updateTl(parseInt(e.target.dataset.idx));
+    }
+  });
+}, {threshold:0.5, rootMargin:'-20% 0px -20% 0px'});
+tlItems.forEach(item => tlScrollObs.observe(item));
+
+// Also respond to click
+tlItems.forEach(item => {
+  item.addEventListener('click', () => {
+    updateTl(parseInt(item.dataset.idx));
+    item.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+});
+
+// ─── UX EVOLUTION SCROLL SYNC ───
+const uxItems = document.querySelectorAll('.ux-item');
+const uxMocks = document.querySelectorAll('.ux-mockup');
+const uxDots = document.querySelectorAll('.ux-dot');
+let activeUxIdx = 0;
+
+function updateUx(idx) {
+  if(idx === activeUxIdx) return;
+  activeUxIdx = idx;
+
+  uxItems.forEach((el,i) => el.classList.toggle('active', i===idx));
+  uxMocks.forEach((m,i) => m.classList.toggle('active', i===idx));
+  uxDots.forEach((d,i) => d.classList.toggle('active', i===idx));
+
+  document.getElementById('uxEraNum').textContent = uxData[idx].num;
+  const nameEl = document.getElementById('uxEraName');
+  nameEl.classList.remove('visible');
+  setTimeout(() => {
+    nameEl.textContent = uxData[idx].name;
+    nameEl.classList.add('visible');
+  }, 100);
+}
+
+const uxScrollObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting && e.intersectionRatio > 0.5) {
+      updateUx(parseInt(e.target.dataset.ux));
+    }
+  });
+}, {threshold:0.5, rootMargin:'-20% 0px -20% 0px'});
+uxItems.forEach(item => uxScrollObs.observe(item));
+
+// Dot click
+uxDots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    const idx = parseInt(dot.dataset.ux);
+    updateUx(idx);
+    uxItems[idx].scrollIntoView({behavior:'smooth', block:'center'});
+  });
+});
+
+// ─── DOMAIN CARDS REVEAL ───
+const domainCards = document.querySelectorAll('.domain-card');
+const domainObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in-view');
+      domainObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+domainCards.forEach(card => domainObs.observe(card));
+
+// tilt effect on domain cards
+domainCards.forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width / 2);
+    const dy = (e.clientY - cy) / (rect.height / 2);
+    card.style.transform = `translateY(-6px) scale(1.01) perspective(800px) rotateX(${-dy * 3}deg) rotateY(${dx * 3}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    card.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1), background 0.5s, box-shadow 0.6s';
+  });
+  card.addEventListener('mouseenter', () => {
+    card.style.transition = 'background 0.5s, box-shadow 0.6s';
+  });
+});
+
+const heroOrbs = document.querySelectorAll('.hero-orb');
+document.getElementById('hero').addEventListener('mousemove', e => {
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+  const dx = (e.clientX - cx) / cx;
+  const dy = (e.clientY - cy) / cy;
+  heroOrbs.forEach((orb, i) => {
+    const depth = (i + 1) * 12;
+    orb.style.transform = `translate3d(${dx * depth}px, ${dy * depth}px, 0)`;
+  });
+});
+</script>
+</body>
+</html>
